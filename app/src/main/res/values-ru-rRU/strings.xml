@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Томатный таймер</string>
+    <string name="time_out">ПЕРЕРЫВ</string>
+    <string name="reset">заново</string>
+    <string name="cancel">закрыть</string>
+    <string name="volume_audion">Увеличьте громкость</string>
+    <string name="permission_granted">Разрешение получено</string>
+    <string name="pause_text">Пауза</string>
+    <string name="start_text">старт</string>
+</resources>
