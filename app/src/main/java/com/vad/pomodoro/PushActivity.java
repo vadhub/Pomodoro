@@ -35,9 +35,7 @@ public class PushActivity extends AppCompatActivity {
     }
 
     public void onFinish(View view) {
-        Intent service = new Intent(this, MyService.class);
         Intent mainActivity = new Intent(this, MainActivity.class);
-        stopService(service);
         startActivity(mainActivity);
         finish();
     }
