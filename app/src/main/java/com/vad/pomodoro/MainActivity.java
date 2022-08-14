@@ -6,9 +6,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -31,41 +33,12 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private AudioManager manager;
     private boolean isStart = false;
     private boolean isCanceled = false;
-
-    public static final int REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION = 1059;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!Settings.canDrawOverlays(this)) {
-                    // You don't have permission
-                    checkPermission();
-                } else {
-                    // Do as per your logic
-                    Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    public void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION);
-            }
-        }
-    }
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermission();
         chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
@@ -74,24 +47,31 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         progressBar.setProgress(secondsInit);
         textTime = (TextView) findViewById(R.id.textTimer);
         textTime.setText(
-                String.format(Locale.ENGLISH, "%d: %d", TimeUnit.SECONDS.toMinutes(secondsInit),
-                        TimeUnit.SECONDS.toSeconds(secondsInit)));
+                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit), TimeUnit.SECONDS.toSeconds(secondsInit)));
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.gong);
+        mediaPlayer.setLooping(false);
     }
 
     //switch start and stop timer
     public void onStartTimer(View view) {
 
         if (isStart && !isCanceled) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
             buttonStart.setText("start");
             chunkTimer.cancel();
             isCanceled = true;
         } else if (!isStart && isCanceled) {
+            checkAudioValue();
             buttonStart.setText("pause");
             chunkTimer = null;
             chunkTimer = new ChunkTimer(millisLeft, 1000, this);
             chunkTimer.start();
             isCanceled = false;
         } else {
+            checkAudioValue();
             chunkTimer.start();
             isCanceled = false;
             buttonStart.setText("pause");
@@ -115,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
 
     //get audio value in app to start
-    private void audioValue() {
+    private void checkAudioValue() {
         int value = manager.getStreamVolume(AudioManager.STREAM_MUSIC);
         if (value < 8) {
             Toast.makeText(this, getResources().getString(R.string.volume_audion), Toast.LENGTH_SHORT).show();
@@ -129,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         millisLeft = timeUntilFinished;
 
         textTime.setText(
-                String.format("%d: %d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
+                String.format("%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
                         TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
         );
 
@@ -138,10 +118,14 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void stopTimer() {
+        //play gong
+        mediaPlayer.start();
         secondsInit = 20;
         isStart = false;
         isCanceled = false;
         progressBar.setProgress(secondsInit);
         buttonStart.setText("start");
+        textTime.setText(
+                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit), TimeUnit.SECONDS.toSeconds(secondsInit)));
     }
 }

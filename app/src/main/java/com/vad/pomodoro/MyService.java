@@ -13,6 +13,9 @@ import android.os.Vibrator;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class MyService extends Service implements TimerHandle {
 
     private MediaPlayer mediaPlayer;
@@ -45,7 +48,10 @@ public class MyService extends Service implements TimerHandle {
 
     @Override
     public void showTime(long timeUntilFinished) {
-
+        showNotification(
+                String.format(Locale.ENGLISH,"%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
+                TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
+        );
     }
 
     //start signal of timeout
@@ -53,11 +59,6 @@ public class MyService extends Service implements TimerHandle {
     public void stopTimer(){
         //play gong
         mediaPlayer.start();
-
-        //start pushActivity
-        Intent pushActivity = new Intent(this, PushActivity.class);
-        pushActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(pushActivity);
 
         //vibrate start
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

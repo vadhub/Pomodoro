@@ -1,5 +1,6 @@
 package com.vad.pomodoro;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -38,6 +39,8 @@ public class NotificationHelper extends ContextWrapper {
     public NotificationCompat.Builder getChannelNotificationBuilder(String title, String text){
 
         Intent intent = new Intent(this, MainActivity.class);
+
+        @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
@@ -51,6 +54,7 @@ public class NotificationHelper extends ContextWrapper {
 
     public Notification.Builder getNotification(String title, String text){
         Intent intent = new Intent(this, MainActivity.class);
+        @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return new Notification.Builder(this).setContentTitle(title)
@@ -61,7 +65,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setVisibility(Notification.VISIBILITY_PUBLIC);
     }
 
-    //clearn all notification
+    //clear all notification
     public void notificationClear(int NOTIFICATION_ID){
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
