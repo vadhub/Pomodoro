@@ -44,7 +44,7 @@ public class MyService extends Service implements TimerHandle {
     }
 
     @Override
-    public void showTime(String timeUntilFinished) {
+    public void showTime(long timeUntilFinished) {
 
     }
 
@@ -66,11 +66,6 @@ public class MyService extends Service implements TimerHandle {
             //deprecated in API 26
             vibrator.vibrate(pattern, 1);
         }
-    }
-
-    @Override
-    public void resumeTimer(long millisInFuture) {
-
     }
 
     //show notification

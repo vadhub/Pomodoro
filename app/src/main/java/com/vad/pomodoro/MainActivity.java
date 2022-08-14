@@ -2,6 +2,7 @@ package com.vad.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -15,19 +16,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity implements TimerHandle {
 
-    private final int secondsInit = 1500;
+    private int secondsInit = 20;
+    private long millisLeft;
     private ChunkTimer chunkTimer;
-    private boolean isStart = false;
-    private TextView textView;
+    private TextView textTime;
     private Button buttonStart;
     private ProgressBar progressBar;
     private AudioManager manager;
-
+    private boolean isStart = false;
+    private boolean isCanceled = false;
 
     public static final int REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION = 1059;
 
@@ -63,36 +66,51 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkPermission();
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(10), 1000, this);
+        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
-        textView = (TextView) findViewById(R.id.textTimer);
+        textTime = (TextView) findViewById(R.id.textTimer);
+        textTime.setText(
+                String.format(Locale.ENGLISH, "%d: %d", TimeUnit.SECONDS.toMinutes(secondsInit),
+                        TimeUnit.SECONDS.toSeconds(secondsInit)));
     }
 
     //switch start and stop timer
     public void onStartTimer(View view) {
-        if (isStart) {
-            audioValue();
-            if (chunkTimer.stateTimer().equals(StateTimer.PAUSE)) {
-                chunkTimer.onResume();
-            } else {
-                chunkTimer.start();
-            }
-            buttonStart.setText(R.string.pause_text);
+
+        if (isStart && !isCanceled) {
+            buttonStart.setText("start");
+            chunkTimer.cancel();
+            isCanceled = true;
+        } else if (!isStart && isCanceled) {
+            buttonStart.setText("pause");
+            chunkTimer = null;
+            chunkTimer = new ChunkTimer(millisLeft, 1000, this);
+            chunkTimer.start();
+            isCanceled = false;
         } else {
-            chunkTimer.onPause();
-            buttonStart.setText(R.string.start_text);
+            chunkTimer.start();
+            isCanceled = false;
+            buttonStart.setText("pause");
         }
+
         isStart = !isStart;
+        System.out.println(isCanceled);
     }
 
     //reset Timer
     public void onResetTimer(View view) {
         isStart = false;
+        isCanceled = false;
+        chunkTimer.cancel();
+        buttonStart.setText("start");
         progressBar.setProgress(secondsInit);
+        textTime.setText(
+                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit),
+                        TimeUnit.SECONDS.toSeconds(secondsInit)));
     }
 
 
@@ -104,20 +122,26 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
-    public void showTime(String timeUntilFinished) {
-        textView.setText(timeUntilFinished);
+    public void showTime(long timeUntilFinished) {
 
+        millisLeft = timeUntilFinished;
+
+        textTime.setText(
+                String.format("%d: %d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
+        );
+
+        progressBar.setProgress((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished));
     }
 
     @Override
     public void stopTimer() {
-        chunkTimer.onFinish();
-    }
-
-    @Override
-    public void resumeTimer(long millisInFuture) {
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(millisInFuture), 1000, this);
-        chunkTimer.start();
+        secondsInit = 20;
+        isStart = false;
+        isCanceled = false;
+        progressBar.setProgress(secondsInit);
+        buttonStart.setText("start");
     }
 }
