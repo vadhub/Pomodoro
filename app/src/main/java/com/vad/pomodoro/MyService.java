@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,6 +28,14 @@ public class MyService extends Service implements TimerHandle {
     private ChunkTimer chunkTimer;
     private int secondsInit = 20;
     private long millisLeft;
+    private IBinder binder = new Binder();
+
+    public class BinderTimer extends Binder {
+
+        public MyService getService() {
+            return MyService.this;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -38,11 +47,6 @@ public class MyService extends Service implements TimerHandle {
         chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return Service.START_STICKY;
     }
 
     @Override
@@ -120,7 +124,13 @@ public class MyService extends Service implements TimerHandle {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
     }
 
     @Override
@@ -130,6 +140,7 @@ public class MyService extends Service implements TimerHandle {
             mediaPlayer.stop();
             mediaPlayer = null;
         }
+
         chunkTimer = null;
         notificationHelper.notificationClear(idNotification);
         notificationHelper = null;

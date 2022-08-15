@@ -54,19 +54,6 @@ public class NotificationHelper extends Application {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
     }
 
-    public Notification.Builder getNotification(String title, String text){
-        Intent intent = new Intent(this, MainActivity.class);
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        return new Notification.Builder(this).setContentTitle(title)
-                .setContentIntent(pendingIntent)
-                .setContentText(text)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .setVisibility(Notification.VISIBILITY_PUBLIC);
-    }
-
     //clear all notification
     public void notificationClear(int NOTIFICATION_ID){
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
