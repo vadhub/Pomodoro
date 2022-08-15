@@ -1,6 +1,7 @@
 package com.vad.pomodoro;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,14 +12,15 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
-public class NotificationHelper extends ContextWrapper {
+public class NotificationHelper extends Application {
     private static final String CHANNEL_ID = "channel11ID";
     private static final String CHANNEL_NAME = "channel11";
 
     private NotificationManager notificationManager;
 
-    public NotificationHelper(Context base) {
-        super(base);
+    @Override
+    public void onCreate() {
+        super.onCreate();
         createChannel();
     }
 
