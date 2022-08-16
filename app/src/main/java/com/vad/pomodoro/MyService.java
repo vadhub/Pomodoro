@@ -1,87 +1,149 @@
 package com.vad.pomodoro;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.Build;
+import android.os.Binder;
 import android.os.IBinder;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class MyService extends Service implements TimerHandle {
 
     private MediaPlayer mediaPlayer;
-    private Vibrator vibrator;
-    private final long[] pattern = {500, 500, 500};
-    private NotificationHelper notificationHelper;
+    private AudioManager manager;
+    private final int idNotification = 1;
+    private TomatoNotificationService notificationService;
+    private NotificationCompat.Builder nb;
+    private boolean isStart = false;
+    private boolean isCanceled = false;
+    private ChunkTimer chunkTimer;
+    private int secondsInit = 20;
+    private long millisLeft;
+    private IBinder binder = new Binder();
+
+    public class BinderTimer extends Binder {
+
+        public MyService getService() {
+            return MyService.this;
+        }
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mediaPlayer.setLooping(true);
-        notificationHelper = new NotificationHelper(MyService.this);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return Service.START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(mediaPlayer!=null&&vibrator!=null){
-            mediaPlayer.stop();
-            vibrator.cancel();
-        }
+        notificationService = new TomatoNotificationService(this);
+        nb = notificationService.showNotification();
+        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
+        manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        startForeground(idNotification, nb.build());
     }
 
     @Override
     public void showTime(long timeUntilFinished) {
+        millisLeft = timeUntilFinished;
+        showNotification(
+                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
+        );
+    }
 
+    public void setTimer(Button buttonStart) {
+
+        if (isStart && !isCanceled) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            buttonStart.setText("start");
+            chunkTimer.cancel();
+            isCanceled = true;
+        } else if (!isStart && isCanceled) {
+            checkAudioValue();
+            buttonStart.setText("pause");
+            chunkTimer = null;
+            chunkTimer = new ChunkTimer(millisLeft, 1000, this);
+            chunkTimer.start();
+            isCanceled = false;
+        } else {
+            checkAudioValue();
+            chunkTimer.start();
+            isCanceled = false;
+            buttonStart.setText("pause");
+        }
+
+        isStart = !isStart;
+    }
+
+    public void timerReset() {
+        isStart = false;
+        isCanceled = false;
+        chunkTimer.cancel();
+    }
+
+    private void checkAudioValue() {
+        int value = manager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (value < 8) {
+            Toast.makeText(this, getResources().getString(R.string.volume_audion), Toast.LENGTH_SHORT).show();
+        }
     }
 
     //start signal of timeout
     @Override
-    public void stopTimer(){
+    public void stopTimer() {
         //play gong
         mediaPlayer.start();
-
-        //start pushActivity
-        Intent pushActivity = new Intent(this, PushActivity.class);
-        pushActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(pushActivity);
-
-        //vibrate start
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createWaveform(pattern, 1));
-        } else {
-            //deprecated in API 26
-            vibrator.vibrate(pattern, 1);
-        }
+        secondsInit = 20;
+        isStart = false;
+        isCanceled = false;
     }
 
     //show notification
-    private void showNotification(String time){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationCompat.Builder nb = notificationHelper.getChannelNotificationBuilder("Time",time);
-            startForeground(1, nb.build());
-        }else {
-            Notification.Builder nb = notificationHelper.getNotification("Time", time);
-            startForeground(1, nb.build());
-        }
+    private void showNotification(String time) {
+        nb.setContentText(time);
+        notificationService.getNotificationManager().notify(idNotification, nb.build());
+    }
+
+    public long getMillisLeft() {
+        return millisLeft;
+    }
+
+    public int getSecondsInit() {
+        return secondsInit;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer = null;
+        }
+
+        chunkTimer = null;
+        notificationService.notificationClear(idNotification);
+        notificationService = null;
+
     }
 }
