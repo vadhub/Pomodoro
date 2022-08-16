@@ -21,7 +21,7 @@ public class MyService extends Service implements TimerHandle {
     private MediaPlayer mediaPlayer;
     private AudioManager manager;
     private final int idNotification = 1;
-    private NotificationHelper notificationHelper;
+    private TomatoNotificationService notificationService;
     private NotificationCompat.Builder nb;
     private boolean isStart = false;
     private boolean isCanceled = false;
@@ -42,8 +42,8 @@ public class MyService extends Service implements TimerHandle {
         super.onCreate();
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
         mediaPlayer.setLooping(true);
-        notificationHelper = new NotificationHelper();
-        nb = notificationHelper.getChannelNotificationBuilder("Time","25:00");
+        notificationService = new TomatoNotificationService(this);
+        nb = notificationService.showNotification();
         chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
@@ -53,8 +53,8 @@ public class MyService extends Service implements TimerHandle {
     public void showTime(long timeUntilFinished) {
         millisLeft = timeUntilFinished;
         showNotification(
-                String.format(Locale.ENGLISH,"%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
-                TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
+                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
         );
     }
 
@@ -99,7 +99,7 @@ public class MyService extends Service implements TimerHandle {
 
     //start signal of timeout
     @Override
-    public void stopTimer(){
+    public void stopTimer() {
         //play gong
         mediaPlayer.start();
         secondsInit = 20;
@@ -108,9 +108,9 @@ public class MyService extends Service implements TimerHandle {
     }
 
     //show notification
-    private void showNotification(String time){
+    private void showNotification(String time) {
         nb.setContentText(time);
-        notificationHelper.getNotificationManager().notify(idNotification, nb.build());
+        notificationService.getNotificationManager().notify(idNotification, nb.build());
     }
 
     public long getMillisLeft() {
@@ -136,14 +136,14 @@ public class MyService extends Service implements TimerHandle {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer!=null) {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer = null;
         }
 
         chunkTimer = null;
-        notificationHelper.notificationClear(idNotification);
-        notificationHelper = null;
+        notificationService.notificationClear(idNotification);
+        notificationService = null;
 
     }
 }

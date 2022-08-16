@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private int secondsInit;
     private MyService mService;
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
@@ -55,12 +55,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        bindService();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -70,28 +64,23 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         progressBar.setMax(20);
         progressBar.setProgress(20);
         textTime = (TextView) findViewById(R.id.textTimer);
-        if (mService != null) {
-            secondsInit = mService.getSecondsInit();
-        }
+        if (mService != null) secondsInit = mService.getSecondsInit();
         textTime.setText(String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit),
                 TimeUnit.SECONDS.toSeconds(secondsInit)));
 
     }
 
-
-
     //switch start and stop timer
     public void onStartTimer(View view) {
-        if (mService != null) {
-            mService.setTimer(buttonStart);
-        }
+        bindService();
+        if (mService != null) mService.setTimer(buttonStart);
+
     }
 
     //reset Timer
     public void onResetTimer(View view) {
-        if (mService != null) {
-            mService.timerReset();
-        }
+        unbindService(serviceConnection);
+        if (mService != null) mService.timerReset();
         buttonStart.setText("start");
         progressBar.setProgress(secondsInit);
         textTime.setText(
@@ -113,16 +102,10 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void stopTimer() {
-
+        if (mService != null) secondsInit = mService.getSecondsInit();
         progressBar.setProgress(secondsInit);
         buttonStart.setText("start");
         textTime.setText(
                 String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit), TimeUnit.SECONDS.toSeconds(secondsInit)));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(serviceConnection);
     }
 }
