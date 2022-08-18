@@ -66,8 +66,20 @@
                 android:layout_margin="8dp"
                 android:onClick="onResetTimer"
                 android:text="@string/reset" />
+
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonUnbind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="unbind"
+        android:onClick="onUnbind"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <!-- ca-app-pub-5356301729869498/1857939557 -->
 </androidx.constraintlayout.widget.ConstraintLayout>

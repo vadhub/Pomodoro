@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -26,9 +27,10 @@ public class MyService extends Service implements TimerHandle {
     private boolean isStart = false;
     private boolean isCanceled = false;
     private ChunkTimer chunkTimer;
-    private int secondsInit = 20;
+    private int secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
     private long millisLeft;
-    private IBinder binder = new BinderTimer();
+    private final IBinder binder = new BinderTimer();
 
     public class BinderTimer extends Binder {
 
@@ -51,16 +53,14 @@ public class MyService extends Service implements TimerHandle {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000);
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void showTime(long timeUntilFinished) {
         millisLeft = timeUntilFinished;
-        showNotification(
-                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
-                        TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
-        );
+        showNotification(dateFormat.format(millisLeft));
     }
 
     public void setTimer(Button buttonStart) {
@@ -111,7 +111,7 @@ public class MyService extends Service implements TimerHandle {
     public void stopTimer() {
         //play gong
         mediaPlayer.start();
-        secondsInit = 20;
+        secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
         isStart = false;
         isCanceled = false;
     }
@@ -119,7 +119,8 @@ public class MyService extends Service implements TimerHandle {
     //show notification
     private void showNotification(String time) {
         nb.setContentText(time);
-        notificationService.getNotificationManager().notify(idNotification, nb.build());
+        if (notificationService != null)
+            notificationService.getNotificationManager().notify(idNotification, nb.build());
     }
 
     public int getSecondsInit() {
