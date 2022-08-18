@@ -12,12 +12,13 @@ public class TomatoNotificationService {
     public static final String ID_NOTIFICATION_CHANNEL = "notification_timer";
     private final Context context;
 
+
     public TomatoNotificationService(Context context) {
         this.context = context;
     }
 
     public NotificationManager getNotificationManager() {
-        return new App().getManager();
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     public NotificationCompat.Builder showNotification() {

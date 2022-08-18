@@ -47,7 +47,6 @@ public class MyService extends Service implements TimerHandle {
         chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
-        System.out.println("create service");
     }
 
     @Override
@@ -117,10 +116,6 @@ public class MyService extends Service implements TimerHandle {
     private void showNotification(String time) {
         nb.setContentText(time);
         notificationService.getNotificationManager().notify(idNotification, nb.build());
-    }
-
-    public long getMillisLeft() {
-        return millisLeft;
     }
 
     public int getSecondsInit() {
