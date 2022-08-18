@@ -4,21 +4,28 @@ import android.os.CountDownTimer;
 
 public class ChunkTimer extends CountDownTimer {
 
-    private final TimerHandle timerHandle;
+    private TimerHandle[] timerHandles;
 
-    public ChunkTimer(long millisInFuture, long countDownInterval, TimerHandle timerHandle) {
+    public void setTimerHandles(TimerHandle[] timerHandles) {
+        this.timerHandles = timerHandles;
+    }
+
+    public ChunkTimer(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
-        this.timerHandle = timerHandle;
     }
 
     @Override
     public void onTick(long millisUntilFinished) {
-        timerHandle.showTime(millisUntilFinished);
+        for (TimerHandle handle: timerHandles) {
+            handle.showTime(millisUntilFinished);
+        }
     }
 
     @Override
     public void onFinish() {
-        timerHandle.stopTimer();
+        for (TimerHandle handle: timerHandles) {
+            handle.stopTimer();
+        }
         System.out.println("FINISH");
     }
 }

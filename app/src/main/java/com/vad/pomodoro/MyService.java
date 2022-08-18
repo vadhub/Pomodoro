@@ -44,7 +44,7 @@ public class MyService extends Service implements TimerHandle {
         mediaPlayer.setLooping(true);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
+        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
     }
@@ -76,7 +76,7 @@ public class MyService extends Service implements TimerHandle {
             checkAudioValue();
             buttonStart.setText("pause");
             chunkTimer = null;
-            chunkTimer = new ChunkTimer(millisLeft, 1000, this);
+            chunkTimer = new ChunkTimer(millisLeft, 1000);
             chunkTimer.start();
             isCanceled = false;
         } else {
@@ -87,6 +87,10 @@ public class MyService extends Service implements TimerHandle {
         }
 
         isStart = !isStart;
+    }
+
+    public void setTimerHandle(TimerHandle handle) {
+        chunkTimer.setTimerHandles(new TimerHandle[]{this, handle});
     }
 
     public void timerReset() {
