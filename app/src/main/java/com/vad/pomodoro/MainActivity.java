@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        bindService();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -72,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     //switch start and stop timer
     public void onStartTimer(View view) {
-        bindService();
         if (mService != null) mService.setTimer(buttonStart);
 
     }

@@ -28,7 +28,7 @@ public class MyService extends Service implements TimerHandle {
     private ChunkTimer chunkTimer;
     private int secondsInit = 20;
     private long millisLeft;
-    private IBinder binder = new Binder();
+    private IBinder binder = new BinderTimer();
 
     public class BinderTimer extends Binder {
 
@@ -47,6 +47,12 @@ public class MyService extends Service implements TimerHandle {
         chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000, this);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
+        System.out.println("create service");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
