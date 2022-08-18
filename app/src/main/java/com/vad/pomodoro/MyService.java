@@ -63,7 +63,7 @@ public class MyService extends Service implements TimerHandle {
         showNotification(dateFormat.format(millisLeft));
     }
 
-    public void setTimer(Button buttonStart) {
+    public void setTimer(Button buttonStart, TimerHandle handle) {
 
         if (isStart && !isCanceled) {
             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
@@ -76,21 +76,18 @@ public class MyService extends Service implements TimerHandle {
             checkAudioValue();
             buttonStart.setText("pause");
             chunkTimer = null;
-            chunkTimer = new ChunkTimer(millisLeft, 1000);
+            chunkTimer = new ChunkTimer(millisLeft, 1000, new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
         } else {
             checkAudioValue();
+            chunkTimer.setTimerHandles(new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
             buttonStart.setText("pause");
         }
 
         isStart = !isStart;
-    }
-
-    public void setTimerHandle(TimerHandle handle) {
-        chunkTimer.setTimerHandles(new TimerHandle[]{this, handle});
     }
 
     public void timerReset() {
