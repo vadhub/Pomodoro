@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         public void onServiceConnected(ComponentName name, IBinder service) {
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
+            mService.setTimerHandle(MainActivity.this);
         }
 
         @Override
