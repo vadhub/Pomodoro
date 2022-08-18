@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -32,16 +33,17 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     private TextView textTime;
     private Button buttonStart;
+    private Button buttonUnbind;
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
-            mService.setTimerHandle(MainActivity.this);
         }
 
         @Override
@@ -68,50 +70,54 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
-        progressBar.setMax(20);
-        progressBar.setProgress(20);
+        buttonUnbind = (Button) findViewById(R.id.buttonUnbind);
+        if (mService != null)
+            secondsInit = mService.getSecondsInit();
+        else
+            secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
+        progressBar.setMax(secondsInit);
+        progressBar.setProgress(secondsInit);
         textTime = (TextView) findViewById(R.id.textTimer);
-        if (mService != null) secondsInit = mService.getSecondsInit();
-        textTime.setText(String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit),
-                TimeUnit.SECONDS.toSeconds(secondsInit)));
+        textTime.setText(dateFormat.format(secondsInit));
 
     }
 
     //switch start and stop timer
     public void onStartTimer(View view) {
-        if (mService != null) mService.setTimer(buttonStart);
-
+        bindService();
+        buttonUnbind.setEnabled(true);
+        if (mService != null) mService.setTimer(buttonStart, this);
     }
 
     //reset Timer
     public void onResetTimer(View view) {
-        unbindService(serviceConnection);
         if (mService != null) mService.timerReset();
         buttonStart.setText("start");
         progressBar.setProgress(secondsInit);
-        textTime.setText(
-                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit),
-                        TimeUnit.SECONDS.toSeconds(secondsInit)));
+        textTime.setText(dateFormat.format(secondsInit));
     }
 
-    @SuppressLint("DefaultLocale")
+    public void onUnbind(View view) {
+        unbindService(serviceConnection);
+        buttonUnbind.setEnabled(false);
+    }
+
     @Override
     public void showTime(long timeUntilFinished) {
 
-        textTime.setText(
-                String.format("%d:%d", TimeUnit.MILLISECONDS.toMinutes(timeUntilFinished),
-                        TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished))
-        );
+        textTime.setText(dateFormat.format(timeUntilFinished));
 
         progressBar.setProgress((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished));
     }
 
     @Override
     public void stopTimer() {
-        if (mService != null) secondsInit = mService.getSecondsInit();
+        if (mService != null)
+            secondsInit = mService.getSecondsInit();
+        else
+            secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
         progressBar.setProgress(secondsInit);
         buttonStart.setText("start");
-        textTime.setText(
-                String.format(Locale.ENGLISH, "%d:%d", TimeUnit.SECONDS.toMinutes(secondsInit), TimeUnit.SECONDS.toSeconds(secondsInit)));
+        textTime.setText(dateFormat.format(secondsInit));
     }
 }
