@@ -27,9 +27,10 @@ public class MyService extends Service implements TimerHandle {
     private boolean isStart = false;
     private boolean isCanceled = false;
     private ChunkTimer chunkTimer;
-    private int secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
+    private int secondsInit;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
     private long millisLeft;
+    private final Pomodoro pomodoro = new Pomodoro();
     private final IBinder binder = new BinderTimer();
 
     public class BinderTimer extends Binder {
@@ -46,6 +47,7 @@ public class MyService extends Service implements TimerHandle {
         mediaPlayer.setLooping(true);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
+        secondsInit = pomodoro.getMinutes();
         chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
@@ -108,7 +110,7 @@ public class MyService extends Service implements TimerHandle {
     public void stopTimer() {
         //play gong
         mediaPlayer.start();
-        secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
+        secondsInit = (int) TimeUnit.MINUTES.toSeconds(pomodoro.getMinutes());
         isStart = false;
         isCanceled = false;
     }

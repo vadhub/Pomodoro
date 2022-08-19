@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
+    private TextView roundTextView;
+    private int round = 0;
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         progressBar.setProgress(secondsInit);
         textTime = (TextView) findViewById(R.id.textTimer);
         textTime.setText(dateFormat.format(secondsInit));
+        roundTextView = (TextView) findViewById(R.id.numRoundTextView);
 
     }
 
@@ -112,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void stopTimer() {
+        roundTextView.setText(round++ + "");
         if (mService != null)
             secondsInit = mService.getSecondsInit();
         else
