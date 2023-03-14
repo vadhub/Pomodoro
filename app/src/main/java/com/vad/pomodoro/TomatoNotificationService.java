@@ -31,6 +31,7 @@ public class TomatoNotificationService {
         return new NotificationCompat.Builder(context, ID_NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Time")
+                .setNotificationSilent()
                 .setContentText("25:00")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
