@@ -46,21 +46,21 @@ public class MyService extends Service implements TimerHandle {
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
+        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
+        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void showTime(long timeUntilFinished) {
         millisLeft = timeUntilFinished;
-        showNotification(DateUtils.formatElapsedTime(millisLeft));
+        showNotification(DateUtils.formatElapsedTime((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished)));
     }
 
     public void setTimer(Button buttonStart, TimerHandle handle) {

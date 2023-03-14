@@ -90,8 +90,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void showTime(long timeUntilFinished) {
-        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
-        progressBar.setProgress((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished));
+        int seconds = (int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished);
+        textTime.setText(DateUtils.formatElapsedTime(seconds));
+        progressBar.setProgress(seconds);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         if (mService != null)
             secondsInit = mService.getMinutesInit();
         else
-            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(5, TimeUnit.MINUTES);
 
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
