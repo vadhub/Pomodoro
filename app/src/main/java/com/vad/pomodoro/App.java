@@ -9,12 +9,10 @@ import android.os.Build;
 
 public class App extends Application {
 
-    private NotificationManager manager;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         creteChannel(manager);
     }
 
@@ -29,9 +27,5 @@ public class App extends Application {
             channel.setDescription("Used for showing time until finish of tomato timer");
             manager.createNotificationChannel(channel);
         }
-    }
-
-    public NotificationManager getManager() {
-        return manager;
     }
 }
