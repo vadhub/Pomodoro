@@ -9,5 +9,7 @@
     <string name="permission_granted">Permission granted</string>
     <string name="app_name">Pomodoro Timer</string>
     <string name="stop">Stop</string>
+    <string name="time">Time</string>
+    <string name="notification_channel">Used for showing time until finish of tomato timer </string>
 
 </resources>
