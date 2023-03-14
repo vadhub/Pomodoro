@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
 
         setTimer();
+
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
 
     }
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     //reset Timer
     public void onResetTimer(View view) {
         if (mService != null) mService.timerReset();
-        buttonStart.setText("start");
+        buttonStart.setText(getResources().getString(R.string.start_text));
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     public void stopTimer() {
         roundTextView.setText(round++ + "");
         setTimer();
-        buttonStart.setText("start");
+        buttonStart.setText(getResources().getString(R.string.start_text));
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 

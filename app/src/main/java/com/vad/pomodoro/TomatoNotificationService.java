@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat;
 public class TomatoNotificationService {
     public static final String ID_NOTIFICATION_CHANNEL = "notification_timer";
     private final Context context;
-
+    private static final int REQUEST_CODE = 0x33234;
 
     public TomatoNotificationService(Context context) {
         this.context = context;
@@ -26,7 +26,7 @@ public class TomatoNotificationService {
         Intent intent = new Intent(context, MainActivity.class);
 
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return new NotificationCompat.Builder(context, ID_NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.mipmap.ic_launcher)

@@ -20,7 +20,7 @@ public class MyService extends Service implements TimerHandle {
 
     private MediaPlayer mediaPlayer;
     private AudioManager manager;
-    private final int idNotification = 1;
+    private final int idNotification = 0x11234c;
     private TomatoNotificationService notificationService;
     private NotificationCompat.Builder nb;
     private boolean isStart = false;
