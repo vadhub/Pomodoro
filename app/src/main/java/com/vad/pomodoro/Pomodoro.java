@@ -1,9 +1,9 @@
 package com.vad.pomodoro;
 
 public class Pomodoro {
-    private final static int WORK = 10;
-    private final static int SHORT = 20;
-    private final static int LONG = 30;
+    private final static int WORK = 25;
+    private final static int SHORT = 5;
+    private final static int LONG = 15;
 
     private int round = 1;
 

@@ -7,14 +7,13 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.text.format.DateUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class MyService extends Service implements TimerHandle {
@@ -27,8 +26,7 @@ public class MyService extends Service implements TimerHandle {
     private boolean isStart = false;
     private boolean isCanceled = false;
     private ChunkTimer chunkTimer;
-    private int secondsInit;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
+    private int minutesInit;
     private long millisLeft;
     private final Pomodoro pomodoro = new Pomodoro();
     private final IBinder binder = new BinderTimer();
@@ -47,22 +45,22 @@ public class MyService extends Service implements TimerHandle {
         mediaPlayer.setLooping(true);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
-        secondsInit = pomodoro.getMinutes();
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000);
+        minutesInit = pomodoro.getMinutes();
+        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.toMillis(secondsInit), 1000);
+        chunkTimer = new ChunkTimer(TimeUnit.SECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void showTime(long timeUntilFinished) {
         millisLeft = timeUntilFinished;
-        showNotification(dateFormat.format(millisLeft));
+        showNotification(DateUtils.formatElapsedTime(millisLeft));
     }
 
     public void setTimer(Button buttonStart, TimerHandle handle) {
@@ -110,7 +108,7 @@ public class MyService extends Service implements TimerHandle {
     public void stopTimer() {
         //play gong
         mediaPlayer.start();
-        secondsInit = (int) TimeUnit.MINUTES.toSeconds(pomodoro.getMinutes());
+        minutesInit = (int) TimeUnit.SECONDS.convert(pomodoro.getMinutes(), TimeUnit.MINUTES);
         isStart = false;
         isCanceled = false;
     }
@@ -122,8 +120,8 @@ public class MyService extends Service implements TimerHandle {
             notificationService.getNotificationManager().notify(idNotification, nb.build());
     }
 
-    public int getSecondsInit() {
-        return secondsInit;
+    public int getMinutesInit() {
+        return minutesInit;
     }
 
     @Nullable

@@ -2,30 +2,18 @@ package com.vad.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Vibrator;
-import android.provider.Settings;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
@@ -39,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private MyService mService;
     private TextView roundTextView;
     private int round = 0;
-
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -74,15 +60,11 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
         buttonUnbind = (Button) findViewById(R.id.buttonUnbind);
-        if (mService != null)
-            secondsInit = mService.getSecondsInit();
-        else
-            secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
-        progressBar.setMax(secondsInit);
-        progressBar.setProgress(secondsInit);
         textTime = (TextView) findViewById(R.id.textTimer);
-        textTime.setText(dateFormat.format(secondsInit));
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
+
+        setTimer();
+        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
 
     }
 
@@ -98,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         if (mService != null) mService.timerReset();
         buttonStart.setText("start");
         progressBar.setProgress(secondsInit);
-        textTime.setText(dateFormat.format(secondsInit));
+        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 
     public void onUnbind(View view) {
@@ -108,21 +90,25 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void showTime(long timeUntilFinished) {
-
-        textTime.setText(dateFormat.format(timeUntilFinished));
-
+        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
         progressBar.setProgress((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished));
     }
 
     @Override
     public void stopTimer() {
         roundTextView.setText(round++ + "");
-        if (mService != null)
-            secondsInit = mService.getSecondsInit();
-        else
-            secondsInit = (int) TimeUnit.MINUTES.toSeconds(25);
-        progressBar.setProgress(secondsInit);
+        setTimer();
         buttonStart.setText("start");
-        textTime.setText(dateFormat.format(secondsInit));
+        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+    }
+
+    private void setTimer() {
+        if (mService != null)
+            secondsInit = mService.getMinutesInit();
+        else
+            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
+
+        progressBar.setMax(secondsInit);
+        progressBar.setProgress(secondsInit);
     }
 }
