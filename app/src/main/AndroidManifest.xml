@@ -14,14 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pomodoro">
 
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-        <!--ca-app-pub-5356301729869498~2241082939-->
-
         <service
-            android:name=".MyService"
-            android:exported="false" />
+            android:name=".MyService" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

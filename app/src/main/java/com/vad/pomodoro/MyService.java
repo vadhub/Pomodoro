@@ -69,12 +69,14 @@ public class MyService extends Service implements TimerHandle {
             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
-            buttonStart.setText("start");
+            buttonStart.setText(getResources().getString(R.string.start_text));
+            buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
             chunkTimer.cancel();
             isCanceled = true;
         } else if (!isStart && isCanceled) {
             checkAudioValue();
-            buttonStart.setText("pause");
+            buttonStart.setText(getResources().getString(R.string.pause_text));
+            buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
             chunkTimer = null;
             chunkTimer = new ChunkTimer(millisLeft, 1000, new TimerHandle[]{this, handle});
             chunkTimer.start();
@@ -84,7 +86,8 @@ public class MyService extends Service implements TimerHandle {
             chunkTimer.setTimerHandles(new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
-            buttonStart.setText("pause");
+            buttonStart.setText(getResources().getString(R.string.pause_text));
+            buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
         }
 
         isStart = !isStart;

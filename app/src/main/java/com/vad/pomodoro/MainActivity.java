@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     private TextView textTime;
     private Button buttonStart;
-    private Button buttonUnbind;
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
-        buttonUnbind = (Button) findViewById(R.id.buttonUnbind);
         textTime = (TextView) findViewById(R.id.textTimer);
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
 
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     //switch start and stop timer
     public void onStartTimer(View view) {
         bindService();
-        buttonUnbind.setEnabled(true);
         if (mService != null) mService.setTimer(buttonStart, this);
     }
 
@@ -80,13 +77,15 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     public void onResetTimer(View view) {
         if (mService != null) mService.timerReset();
         buttonStart.setText(getResources().getString(R.string.start_text));
+        buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 
-    public void onUnbind(View view) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         unbindService(serviceConnection);
-        buttonUnbind.setEnabled(false);
     }
 
     @Override
@@ -101,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         roundTextView.setText(round++ + "");
         setTimer();
         buttonStart.setText(getResources().getString(R.string.start_text));
+        buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         if (mService != null)
             secondsInit = mService.getMinutesInit();
         else
-            secondsInit = (int) TimeUnit.SECONDS.convert(5, TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
 
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
