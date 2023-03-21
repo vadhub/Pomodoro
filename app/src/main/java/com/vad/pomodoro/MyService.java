@@ -42,7 +42,6 @@ public class MyService extends Service implements TimerHandle {
     public void onCreate() {
         super.onCreate();
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
-        mediaPlayer.setLooping(true);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
@@ -64,7 +63,7 @@ public class MyService extends Service implements TimerHandle {
     }
 
     public void setTimer(Button buttonStart, TimerHandle handle) {
-
+        System.out.println("##setTimer-------"+ minutesInit + millisLeft);
         if (isStart && !isCanceled) {
             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -112,6 +111,7 @@ public class MyService extends Service implements TimerHandle {
         //play gong
         mediaPlayer.start();
         minutesInit = (int) TimeUnit.SECONDS.convert(pomodoro.getMinutes(), TimeUnit.MINUTES);
+        System.out.println("##pomod" + minutesInit);
         isStart = false;
         isCanceled = false;
     }
