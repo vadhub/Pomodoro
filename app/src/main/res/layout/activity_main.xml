@@ -12,11 +12,12 @@
         android:id="@+id/progressBar2"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/circle"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textTimer"
@@ -35,39 +36,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/progressBar2">
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <Button
+            android:id="@+id/buttonStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:layout_margin="8dp"
+            android:drawableLeft="@drawable/ic_baseline_play_arrow_24"
+            android:onClick="onStartTimer"
+            android:text="@string/start_text" />
 
-            <Button
-                android:id="@+id/buttonStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_play_arrow_24"
-                android:layout_margin="8dp"
-                android:onClick="onStartTimer"
-                android:text="@string/start_text" />
-
-            <Button
-                android:id="@+id/buttonReset"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:onClick="onResetTimer"
-                android:drawableLeft="@drawable/ic_baseline_refresh_24"
-                android:text="@string/reset" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/buttonReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:drawableLeft="@drawable/ic_baseline_refresh_24"
+            android:onClick="onResetTimer"
+            android:text="@string/reset" />
     </LinearLayout>
 
     <TextView

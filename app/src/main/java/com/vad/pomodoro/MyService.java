@@ -127,6 +127,10 @@ public class MyService extends Service implements TimerHandle {
         return minutesInit;
     }
 
+    public int getRound() {
+        return pomodoro.getRound();
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

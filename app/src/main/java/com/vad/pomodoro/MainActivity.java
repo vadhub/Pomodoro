@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private int secondsInit;
     private MyService mService;
     private TextView roundTextView;
-    private int round = 0;
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -97,11 +96,11 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void stopTimer() {
-        roundTextView.setText(round++ + "");
         setTimer();
         buttonStart.setText(getResources().getString(R.string.start_text));
         buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+        roundTextView.setText("round #"+mService.getRound());
     }
 
     private void setTimer() {
