@@ -11,4 +11,8 @@
     <string name="notification_channel">Se utiliza para mostrar el tiempo hasta el final del temporizador de tomate</string>
     <string name="time">Tiempo</string>
     <string name="stop">Detener</string>
+    <string name="round1">1</string>
+    <string name="round3">3</string>
+    <string name="round4">4</string>
+    <string name="round2" translatable="false">2</string>
 </resources>

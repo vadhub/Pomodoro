@@ -11,5 +11,9 @@
     <string name="stop">Stop</string>
     <string name="time">Time</string>
     <string name="notification_channel">Used for showing time until finish of tomato timer </string>
+    <string name="round1">1</string>
+    <string name="round2">2</string>
+    <string name="round3">3</string>
+    <string name="round4">4</string>
 
 </resources>
