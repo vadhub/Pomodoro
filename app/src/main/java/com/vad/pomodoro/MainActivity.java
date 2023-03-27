@@ -6,11 +6,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,9 +28,15 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private MyService mService;
     private TextView roundTextView;
 
+    private ImageView oneRound;
+    private ImageView twoRound;
+    private ImageView threeRound;
+    private ImageView fourRound;
+
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
         }
@@ -60,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         textTime = (TextView) findViewById(R.id.textTimer);
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
 
+        oneRound = findViewById(R.id.oneRound);
+        twoRound = findViewById(R.id.twoRound);
+        threeRound = findViewById(R.id.threeRound);
+        fourRound = findViewById(R.id.fourRound);
+
         setTimer();
 
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
@@ -69,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     //switch start and stop timer
     public void onStartTimer(View view) {
         bindService();
+        oneRound.setImageDrawable(getDrawable(R.drawable.indicator_current));
         if (mService != null) mService.setTimer(buttonStart, this);
     }
 
