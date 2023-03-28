@@ -24,13 +24,12 @@ public class TomatoNotificationService {
     public NotificationCompat.Builder showNotification() {
 
         Intent intent = new Intent(context, MainActivity.class);
-
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_MUTABLE);
 
         return new NotificationCompat.Builder(context, ID_NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Time")
+                .setContentTitle(context.getResources().getString(R.string.time))
                 .setNotificationSilent()
                 .setContentText("25:00")
                 .setContentIntent(pendingIntent)

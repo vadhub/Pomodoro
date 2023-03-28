@@ -24,7 +24,7 @@ public class App extends Application {
                     NotificationManager.IMPORTANCE_DEFAULT
             );
 
-            channel.setDescription("Used for showing time until finish of tomato timer");
+            channel.setDescription(getResources().getString(R.string.notification_channel));
             manager.createNotificationChannel(channel);
         }
     }

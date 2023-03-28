@@ -6,11 +6,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,16 +23,20 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     private TextView textTime;
     private Button buttonStart;
-    private Button buttonUnbind;
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
     private TextView roundTextView;
-    private int round = 0;
+
+    private ImageView oneRound;
+    private ImageView twoRound;
+    private ImageView threeRound;
+    private ImageView fourRound;
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
         }
@@ -59,9 +65,13 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
-        buttonUnbind = (Button) findViewById(R.id.buttonUnbind);
         textTime = (TextView) findViewById(R.id.textTimer);
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
+
+        oneRound = findViewById(R.id.oneRound);
+        twoRound = findViewById(R.id.twoRound);
+        threeRound = findViewById(R.id.threeRound);
+        fourRound = findViewById(R.id.fourRound);
 
         setTimer();
 
@@ -72,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     //switch start and stop timer
     public void onStartTimer(View view) {
         bindService();
-        buttonUnbind.setEnabled(true);
+        oneRound.setImageDrawable(getDrawable(R.drawable.indicator_current));
         if (mService != null) mService.setTimer(buttonStart, this);
     }
 
@@ -80,13 +90,15 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     public void onResetTimer(View view) {
         if (mService != null) mService.timerReset();
         buttonStart.setText(getResources().getString(R.string.start_text));
+        buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 
-    public void onUnbind(View view) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         unbindService(serviceConnection);
-        buttonUnbind.setEnabled(false);
     }
 
     @Override
@@ -98,17 +110,18 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     @Override
     public void stopTimer() {
-        roundTextView.setText(round++ + "");
         setTimer();
         buttonStart.setText(getResources().getString(R.string.start_text));
+        buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+        roundTextView.setText("round #"+mService.getRound());
     }
 
     private void setTimer() {
         if (mService != null)
             secondsInit = mService.getMinutesInit();
         else
-            secondsInit = (int) TimeUnit.SECONDS.convert(5, TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
 
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
