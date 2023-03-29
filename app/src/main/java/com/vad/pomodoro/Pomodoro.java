@@ -1,7 +1,7 @@
 package com.vad.pomodoro;
 
 public class Pomodoro {
-    private final static int WORK = 25;
+    private final static int WORK = 10;
     private final static int SHORT = 5;
     private final static int LONG = 15;
     private final RoundListener listener;
@@ -13,7 +13,7 @@ public class Pomodoro {
         this.timeListener = timeListener;
     }
 
-    private int round = 0;
+    private int round = 1;
     private int indicate = 1;
 
     public void changeRound() {
@@ -30,11 +30,12 @@ public class Pomodoro {
             indicate++;
             currentState = WORK;
         }
-        listener.change(round);
+        listener.change(indicate);
     }
 
     public void finishRound() {
-        listener.change(round);
+        indicate++;
+        listener.change(indicate);
         timeListener.changeTime(currentState);
     }
 

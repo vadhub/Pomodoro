@@ -55,6 +55,7 @@ public class IndicatorRound {
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 break;
+
             case 0:
                 roundTextView.setText(context.getString(R.string.round4));
                 fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
