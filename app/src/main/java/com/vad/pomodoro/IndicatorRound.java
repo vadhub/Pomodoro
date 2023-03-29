@@ -1,18 +1,31 @@
 package com.vad.pomodoro;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class IndicatorRound {
 
-    private Context context;
+    private final Context context;
 
-    public void setContext(Context context) {
+    private final ImageView oneRound;
+    private final ImageView twoRound;
+    private final ImageView threeRound;
+    private final ImageView fourRound;
+    private final TextView roundTextView;
+
+    public IndicatorRound(Context context, ImageView oneRound, ImageView twoRound, ImageView threeRound, ImageView fourRound, TextView roundTextView) {
         this.context = context;
+        this.oneRound = oneRound;
+        this.twoRound = twoRound;
+        this.threeRound = threeRound;
+        this.fourRound = fourRound;
+        this.roundTextView = roundTextView;
     }
 
-    public void setRound(ImageView oneRound, ImageView twoRound, ImageView threeRound, ImageView fourRound, TextView roundTextView, int round) {
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void setRound(int round) {
         switch (round) {
             case 1:
                 roundTextView.setText(context.getString(R.string.round1));

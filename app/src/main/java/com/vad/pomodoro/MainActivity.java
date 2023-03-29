@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
+
     private TextView roundTextView;
 
     private ImageView oneRound;
@@ -33,12 +35,16 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private ImageView threeRound;
     private ImageView fourRound;
 
+    private IndicatorRound indicatorRound;
+
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
+            setTimer();
+            Log.d("##service", "onServiceConnected"+secondsInit);
         }
 
         @Override
@@ -50,12 +56,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private void bindService() {
         Intent intent = new Intent(this, MyService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        bindService();
+        Log.d("##service", "bindService");
     }
 
     @Override
@@ -73,26 +74,21 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         threeRound = findViewById(R.id.threeRound);
         fourRound = findViewById(R.id.fourRound);
 
-        setTimer();
+        indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView);
 
-        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+        Log.d("##service", "onCreate");
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bindService();
     }
 
     //switch start and stop timer
     public void onStartTimer(View view) {
-        bindService();
-        oneRound.setImageDrawable(getDrawable(R.drawable.indicator_current));
         if (mService != null) mService.setTimer(buttonStart, this);
-    }
-
-    //reset Timer
-    public void onResetTimer(View view) {
-        if (mService != null) mService.timerReset();
-        buttonStart.setText(getResources().getString(R.string.start_text));
-        buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
-        progressBar.setProgress(secondsInit);
-        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 
     @Override
@@ -113,17 +109,19 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         setTimer();
         buttonStart.setText(getResources().getString(R.string.start_text));
         buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
-        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
-        roundTextView.setText("round #"+mService.getRound());
     }
 
     private void setTimer() {
-        if (mService != null)
-            secondsInit = mService.getMinutesInit();
-        else
+        if (mService != null) {
+            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
+            Log.d("##service", "1");
+        } else {
+            Log.d("##service", "2");
             secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
+        }
 
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
+        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 }
