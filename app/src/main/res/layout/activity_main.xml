@@ -52,14 +52,6 @@
             android:onClick="onStartTimer"
             android:text="@string/start_text" />
 
-        <Button
-            android:id="@+id/buttonReset"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:drawableLeft="@drawable/ic_baseline_refresh_24"
-            android:onClick="onResetTimer"
-            android:text="@string/reset" />
     </LinearLayout>
 
     <TextView

@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bindService();
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
         textTime = (TextView) findViewById(R.id.textTimer);
@@ -80,21 +78,17 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
         Log.d("##service", "onCreate");
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bindService();
     }
 
     //switch start and stop timer
     public void onStartTimer(View view) {
         if (mService != null) mService.setTimer(buttonStart, this);
-    }
-
-    //reset Timer
-    public void onResetTimer(View view) {
-        if (mService != null) mService.timerReset();
-        buttonStart.setText(getResources().getString(R.string.start_text));
-        buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
-        progressBar.setProgress(secondsInit);
-        textTime.setText(DateUtils.formatElapsedTime(secondsInit));
     }
 
     @Override

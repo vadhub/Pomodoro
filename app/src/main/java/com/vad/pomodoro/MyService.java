@@ -89,12 +89,6 @@ public class MyService extends Service implements TimerHandle {
         isStart = !isStart;
     }
 
-    public void timerReset() {
-        isStart = false;
-        isCanceled = false;
-        chunkTimer.cancel();
-    }
-
     private void checkAudioValue() {
         int value = manager.getStreamVolume(AudioManager.STREAM_MUSIC);
         if (value < 8) {
@@ -122,10 +116,6 @@ public class MyService extends Service implements TimerHandle {
 
     public int getMinutesInit() {
         return minutesInit;
-    }
-
-    public int getRound() {
-        return pomodoro.getRound();
     }
 
     @Nullable
