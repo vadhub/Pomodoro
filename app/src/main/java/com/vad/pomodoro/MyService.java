@@ -17,7 +17,7 @@ import androidx.core.app.NotificationCompat;
 
 import java.util.concurrent.TimeUnit;
 
-public class MyService extends Service implements TimerHandle, RoundListener{
+public class MyService extends Service implements TimerHandle, RoundListener, TimeListener {
 
     private MediaPlayer mediaPlayer;
     private AudioManager manager;
@@ -29,13 +29,18 @@ public class MyService extends Service implements TimerHandle, RoundListener{
     private ChunkTimer chunkTimer;
     private int minutesInit;
     private long millisLeft;
-    private final Pomodoro pomodoro = new Pomodoro(this);
+    private final Pomodoro pomodoro = new Pomodoro(this, this);
     private IndicatorRound indicatorRound;
     private final IBinder binder = new BinderTimer();
 
     @Override
     public void change(int round) {
         indicatorRound.setRound(round);
+    }
+
+    @Override
+    public void changeTime(int time) {
+        minutesInit = time;
     }
 
     public class BinderTimer extends Binder {
@@ -85,7 +90,8 @@ public class MyService extends Service implements TimerHandle, RoundListener{
             System.out.println("start1");
             checkAudioValue();
             pomodoro.changeRound();
-            chunkTimer.setTimerHandles(new TimerHandle[]{this, handle});
+            chunkTimer = null;
+            chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.SECONDS), 1000,  new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
             buttonStart.setText(getResources().getString(R.string.pause_text));
@@ -111,8 +117,7 @@ public class MyService extends Service implements TimerHandle, RoundListener{
     public void stopTimer() {
         //play gong
         mediaPlayer.start();
-        minutesInit = pomodoro.getMinutes();
-        pomodoro.changeRound();
+        pomodoro.finishRound();
         System.out.println("##pomod" + minutesInit);
         isStart = false;
         isCanceled = false;

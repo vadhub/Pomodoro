@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
             mService.setIndicator(indicatorRound);
-            setTimer();
             Log.d("##service", "onServiceConnected"+secondsInit);
         }
 
@@ -85,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     protected void onStart() {
         super.onStart();
         bindService();
+        setTimer();
     }
 
     //switch start and stop timer
