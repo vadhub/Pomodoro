@@ -41,16 +41,24 @@ public class IndicatorRound {
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 break;
 
-            case 3:
+            case 4:
                 roundTextView.setText(context.getString(R.string.round3));
                 threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 break;
 
-            case 4:
+            case 6:
                 roundTextView.setText(context.getString(R.string.round4));
                 fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                break;
+
+            case 0:
+                roundTextView.setText(context.getString(R.string.round4));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
