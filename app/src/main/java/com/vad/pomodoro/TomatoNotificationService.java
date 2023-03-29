@@ -1,6 +1,5 @@
 package com.vad.pomodoro;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -33,7 +32,7 @@ public class TomatoNotificationService {
                 .setNotificationSilent()
                 .setContentText("25:00")
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
     }
 

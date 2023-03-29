@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class MyService extends Service implements TimerHandle {
     private ChunkTimer chunkTimer;
     private int minutesInit;
     private long millisLeft;
-    private final Pomodoro pomodoro = new Pomodoro();
+    private Pomodoro pomodoro;
     private final IBinder binder = new BinderTimer();
 
     public class BinderTimer extends Binder {
@@ -41,6 +42,8 @@ public class MyService extends Service implements TimerHandle {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("##ms", "onCreate");
+        pomodoro = new Pomodoro();
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
@@ -48,12 +51,6 @@ public class MyService extends Service implements TimerHandle {
         chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startForeground(idNotification, nb.build());
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
