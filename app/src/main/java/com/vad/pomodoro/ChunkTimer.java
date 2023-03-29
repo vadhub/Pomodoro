@@ -6,7 +6,6 @@ public class ChunkTimer extends CountDownTimer {
 
     private TimerHandle[] timerHandles;
 
-
     public void setTimerHandles(TimerHandle[] timerHandles) {
         this.timerHandles = timerHandles;
     }

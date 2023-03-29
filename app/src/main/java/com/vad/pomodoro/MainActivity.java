@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
+            mService.setIndicator(indicatorRound);
             setTimer();
             Log.d("##service", "onServiceConnected"+secondsInit);
         }
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         buttonStart = (Button) findViewById(R.id.buttonStart);
@@ -88,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     //switch start and stop timer
     public void onStartTimer(View view) {
-        if (mService != null) mService.setTimer(buttonStart, this);
+        if (mService != null) {
+            mService.setTimer(buttonStart, this);
+        }
     }
 
     @Override
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     private void setTimer() {
         if (mService != null) {
-            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.SECONDS);
             Log.d("##service", "1");
         } else {
             Log.d("##service", "2");
