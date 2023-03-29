@@ -1,36 +1,36 @@
 package com.vad.pomodoro;
 
 public class Pomodoro {
-    private final static int WORK = 1;
-    private final static int SHORT = 1;
-    private final static int LONG = 1;
+    private final static int WORK = 25;
+    private final static int SHORT = 10;
+    private final static int LONG = 15;
+    private final RoundListener listener;
+    private int currentState = WORK;
 
-    private Pomodor pomodor;
+    public Pomodoro(RoundListener listener) {
+        this.listener = listener;
+    }
 
-    private int round = 1;
+    private int round = 0;
+
+    public void changeRound() {
+        int minutes;
+        round++;
+        if (round % 2 == 0) {
+            minutes = SHORT;
+
+            if (round == 8) {
+                round = 1;
+                minutes = LONG;
+            }
+        } else {
+            minutes = WORK;
+        }
+        listener.change(round);
+        currentState = minutes;
+    }
 
     public int getMinutes() {
-        if (round % 2 == 0) {
-            if (round == 4) {
-                round = 1;
-                pomodor = Pomodor.LONG;
-                return LONG;
-            }
-            round++;
-            pomodor = Pomodor.SHORT;
-            return SHORT;
-        } else {
-            round++;
-            pomodor = Pomodor.WORK;
-            return WORK;
-        }
-    }
-
-    public Pomodor getPomodor() {
-        return pomodor;
-    }
-
-    public int getRound() {
-        return round;
+        return currentState;
     }
 }
