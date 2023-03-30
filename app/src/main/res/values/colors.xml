@@ -11,4 +11,6 @@
     <color name="tomato_pale">#ffe3de</color>
     <color name="tomatoLight">#ffbf47</color>
     <color name="tomatoDark">#ff4d2e</color>
+    <color name="light_green">#ccffcf</color>
+    <color name="green">#5bd461</color>
 </resources>
