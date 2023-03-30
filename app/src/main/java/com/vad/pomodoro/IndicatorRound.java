@@ -28,7 +28,15 @@ public class IndicatorRound {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public void setRound(int round) {
+    public void setRound(int round, boolean isRelax) {
+
+        if (isRelax) {
+            setRelax();
+            return;
+        }
+
+        setWork();
+
         switch (round) {
             case 1:
                 roundTextView.setText(context.getString(R.string.round1));

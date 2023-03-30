@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private ImageView twoRound;
     private ImageView threeRound;
     private ImageView fourRound;
-
+    private ProgressBarAnimation anim;
     private IndicatorRound indicatorRound;
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        anim = new ProgressBarAnimation(progressBar, 0, 10);
+        anim.setDuration(1000);
+
         buttonStart = (Button) findViewById(R.id.buttonStart);
         textTime = (TextView) findViewById(R.id.textTimer);
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
@@ -120,9 +123,10 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
             Log.d("##service", "1");
         } else {
             Log.d("##service", "2");
-            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(10, TimeUnit.SECONDS);
         }
 
+        progressBar.setAnimation(anim);
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
