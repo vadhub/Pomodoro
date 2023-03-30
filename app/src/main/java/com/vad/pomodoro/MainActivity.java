@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         threeRound = findViewById(R.id.threeRound);
         fourRound = findViewById(R.id.fourRound);
 
-        indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView);
+        indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView, progressBar);
 
         Log.d("##service", "onCreate");
 

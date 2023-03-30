@@ -39,6 +39,11 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     }
 
     @Override
+    public void relax() {
+        indicatorRound.setRelax();
+    }
+
+    @Override
     public void changeTime(int time) {
         minutesInit = time;
     }
@@ -89,7 +94,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         } else {
             System.out.println("start1");
             checkAudioValue();
-            pomodoro.changeRound();
             chunkTimer = null;
             chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.SECONDS), 1000,  new TimerHandle[]{this, handle});
             chunkTimer.start();

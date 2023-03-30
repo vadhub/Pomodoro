@@ -1,5 +1,7 @@
 package com.vad.pomodoro;
 
+import android.util.Log;
+
 public class Pomodoro {
     private final static int WORK = 10;
     private final static int SHORT = 5;
@@ -14,28 +16,27 @@ public class Pomodoro {
     }
 
     private int round = 1;
-    private int indicate = 1;
 
     public void changeRound() {
-        round++;
         if (round % 2 == 0) {
             currentState = SHORT;
-
+            Log.d("Pomodoro", "short");
             if (round == 8) {
                 round = 0;
-                indicate = 0;
                 currentState = LONG;
+                Log.d("Pomodoro", "LONG");
             }
         } else {
-            indicate++;
+            Log.d("Pomodoro", "work");
             currentState = WORK;
         }
-        listener.change(indicate);
+        listener.change(round);
     }
 
     public void finishRound() {
-        indicate++;
-        listener.change(indicate);
+        round++;
+        listener.relax();
+        changeRound();
         timeListener.changeTime(currentState);
     }
 

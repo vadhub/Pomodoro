@@ -3,6 +3,7 @@ package com.vad.pomodoro;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class IndicatorRound {
@@ -14,14 +15,16 @@ public class IndicatorRound {
     private final ImageView threeRound;
     private final ImageView fourRound;
     private final TextView roundTextView;
+    private final ProgressBar progressBar;
 
-    public IndicatorRound(Context context, ImageView oneRound, ImageView twoRound, ImageView threeRound, ImageView fourRound, TextView roundTextView) {
+    public IndicatorRound(Context context, ImageView oneRound, ImageView twoRound, ImageView threeRound, ImageView fourRound, TextView roundTextView, ProgressBar progressBar) {
         this.context = context;
         this.oneRound = oneRound;
         this.twoRound = twoRound;
         this.threeRound = threeRound;
         this.fourRound = fourRound;
         this.roundTextView = roundTextView;
+        this.progressBar = progressBar;
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -65,5 +68,15 @@ public class IndicatorRound {
                 break;
 
         }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void setRelax() {
+        roundTextView.setText("Relax");
+        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle_relax));
+    }
+
+    public void setWork() {
+        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle));
     }
 }
