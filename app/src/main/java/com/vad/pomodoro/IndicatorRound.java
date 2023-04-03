@@ -48,7 +48,7 @@ public class IndicatorRound {
                 break;
 
             case 2:
-                roundTextView.setText("Relax");
+                roundTextView.setText(context.getString(R.string.relax));
                 setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
@@ -66,7 +66,7 @@ public class IndicatorRound {
                 break;
 
             case 4:
-                roundTextView.setText("Relax");
+                roundTextView.setText(context.getString(R.string.relax));
                 setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
@@ -84,7 +84,7 @@ public class IndicatorRound {
                 break;
 
             case 6:
-                roundTextView.setText("Relax");
+                roundTextView.setText(context.getString(R.string.relax));
                 setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
@@ -102,7 +102,7 @@ public class IndicatorRound {
                 break;
 
             case 0:
-                roundTextView.setText("Relax");
+                roundTextView.setText(context.getString(R.string.relax));
                 setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
