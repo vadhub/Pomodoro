@@ -3,7 +3,7 @@ package com.vad.pomodoro;
 import android.util.Log;
 
 public class Pomodoro {
-    private final static int WORK = 10;
+    private final static int WORK = 25;
     private final static int SHORT = 5;
     private final static int LONG = 15;
     private final RoundListener listener;

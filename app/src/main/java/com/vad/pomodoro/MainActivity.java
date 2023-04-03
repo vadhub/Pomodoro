@@ -2,6 +2,7 @@ package com.vad.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -65,11 +67,12 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        anim = new ProgressBarAnimation(progressBar, 0, 10);
-        anim.setDuration(1000);
+        anim = new ProgressBarAnimation(progressBar, 0, 1500);
+        anim.setDuration(600);
 
         buttonStart = (Button) findViewById(R.id.buttonStart);
         textTime = (TextView) findViewById(R.id.textTimer);
+
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
 
         oneRound = findViewById(R.id.oneRound);
@@ -84,10 +87,23 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        float width = buttonStart.getMeasuredWidth() / 2f;
+        float f = getResources().getDisplayMetrics().widthPixels/2f;
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width);
+        objectAnimator.setDuration(200);
+        objectAnimator.setInterpolator(new DecelerateInterpolator());
+        objectAnimator.start();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         bindService();
         setTimer();
+        Log.d("##4", textTime.getX()+" "+textTime.getWidth());
     }
 
     //switch start and stop timer
@@ -119,11 +135,11 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
     private void setTimer() {
         if (mService != null) {
-            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.SECONDS);
+            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
             Log.d("##service", "1");
         } else {
             Log.d("##service", "2");
-            secondsInit = (int) TimeUnit.SECONDS.convert(10, TimeUnit.SECONDS);
+            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
         }
 
         progressBar.setAnimation(anim);

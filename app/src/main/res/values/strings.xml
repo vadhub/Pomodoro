@@ -1,19 +1,16 @@
 <resources>
     <string name="_00_00" translatable="false">00:00</string>
-    <string name="reset">reset</string>
-    <string name="time_out">TIME OUT</string>
-    <string name="cancel">cancel</string>
     <string name="volume_audion">Increase volume audio</string>
     <string name="pause_text">Pause</string>
     <string name="start_text">Start</string>
-    <string name="permission_granted">Permission granted</string>
     <string name="app_name">Pomodoro Timer</string>
-    <string name="stop">Stop</string>
     <string name="time">Time</string>
     <string name="notification_channel">Used for showing time until finish of tomato timer </string>
     <string name="round1">1</string>
     <string name="round2">2</string>
     <string name="round3">3</string>
     <string name="round4">4</string>
+
+    <string name="relax">Rest</string>
 
 </resources>
