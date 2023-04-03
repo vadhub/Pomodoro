@@ -35,12 +35,8 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
 
     @Override
     public void change(int round) {
-        indicatorRound.setRound(round);
-    }
-
-    @Override
-    public void relax() {
-        indicatorRound.setRelax();
+        Log.d("%%service", round+"");
+        indicatorRound.changeRound(round);
     }
 
     @Override

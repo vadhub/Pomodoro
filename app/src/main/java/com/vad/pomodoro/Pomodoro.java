@@ -18,6 +18,7 @@ public class Pomodoro {
     private int round = 1;
 
     public void changeRound() {
+        round++;
         if (round % 2 == 0) {
             currentState = SHORT;
             Log.d("Pomodoro", "short");
@@ -30,12 +31,11 @@ public class Pomodoro {
             Log.d("Pomodoro", "work");
             currentState = WORK;
         }
+        Log.d("Pomodoro", round+"");
         listener.change(round);
     }
 
     public void finishRound() {
-        round++;
-        listener.relax();
         changeRound();
         timeListener.changeTime(currentState);
     }
