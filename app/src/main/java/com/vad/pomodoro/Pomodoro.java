@@ -9,7 +9,6 @@ public class Pomodoro {
     private final RoundListener listener;
     private final TimeListener timeListener;
     private int currentState = WORK;
-    private boolean isRelax = false;
 
     public Pomodoro(RoundListener listener, TimeListener timeListener) {
         this.listener = listener;
@@ -22,7 +21,6 @@ public class Pomodoro {
         round++;
         if (round % 2 == 0) {
             currentState = SHORT;
-            isRelax = true;
             Log.d("Pomodoro", "short");
             if (round == 8) {
                 round = 0;
@@ -32,9 +30,9 @@ public class Pomodoro {
         } else {
             Log.d("Pomodoro", "work");
             currentState = WORK;
-            isRelax = false;
         }
-        listener.change(round, isRelax);
+        Log.d("Pomodoro", round+"");
+        listener.change(round);
     }
 
     public void finishRound() {

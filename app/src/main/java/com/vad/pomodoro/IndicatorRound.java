@@ -28,18 +28,19 @@ public class IndicatorRound {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public void setRound(int round, boolean isRelax) {
+    public void setRelax() {
+        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle_relax));
+    }
 
-        if (isRelax) {
-            setRelax();
-            return;
-        }
+    public void setWork() {
+        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle));
+    }
 
-        setWork();
-
+    public void changeRound(int round) {
         switch (round) {
             case 1:
                 roundTextView.setText(context.getString(R.string.round1));
+                setWork();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
                 fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
                 threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
@@ -47,44 +48,68 @@ public class IndicatorRound {
                 break;
 
             case 2:
-                roundTextView.setText(context.getString(R.string.round2));
-                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
+                roundTextView.setText("Relax");
+                setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                break;
+
+            case 3:
+                roundTextView.setText(context.getString(R.string.round2));
+                setWork();
+                oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
                 break;
 
             case 4:
-                roundTextView.setText(context.getString(R.string.round3));
-                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
-                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                roundTextView.setText("Relax");
+                setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                break;
+
+            case 5:
+                roundTextView.setText(context.getString(R.string.round3));
+                setWork();
+                oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
                 break;
 
             case 6:
-                roundTextView.setText(context.getString(R.string.round4));
-                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
-                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
-                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                roundTextView.setText("Relax");
+                setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                break;
+
+            case 7:
+                roundTextView.setText(context.getString(R.string.round4));
+                setWork();
+                oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_current));
                 break;
 
             case 0:
-                roundTextView.setText(context.getString(R.string.round4));
-                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
-                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
-                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                roundTextView.setText("Relax");
+                setRelax();
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 break;
 
         }
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void setRelax() {
-        roundTextView.setText("Relax");
-        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle_relax));
-    }
-
-    public void setWork() {
-        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle));
     }
 }

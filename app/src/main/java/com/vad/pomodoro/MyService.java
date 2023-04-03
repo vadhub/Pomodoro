@@ -34,8 +34,9 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     private final IBinder binder = new BinderTimer();
 
     @Override
-    public void change(int round, boolean isRelax) {
-        indicatorRound.setRound(round, isRelax);
+    public void change(int round) {
+        Log.d("%%service", round+"");
+        indicatorRound.changeRound(round);
     }
 
     @Override
