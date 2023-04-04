@@ -1,6 +1,9 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.model;
 
 import android.util.Log;
+
+import com.vad.pomodoro.RoundListener;
+import com.vad.pomodoro.TimeListener;
 
 public class Pomodoro {
     private final static int WORK = 25;

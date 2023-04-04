@@ -1,5 +1,6 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
@@ -12,17 +13,25 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.vad.pomodoro.Consumer;
+import com.vad.pomodoro.domain.MyService;
+import com.vad.pomodoro.R;
+import com.vad.pomodoro.TimerHandle;
 
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle {
+public class MainActivity extends AppCompatActivity implements TimerHandle, Consumer {
 
     private TextView textTime;
     private Button buttonStart;
@@ -87,13 +96,29 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.just_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.settings) {
+            OptionDialogFragment dialogFragment = new OptionDialogFragment();
+            dialogFragment.show(getSupportFragmentManager(), "settings_fragment");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         float width = buttonStart.getMeasuredWidth() / 2f;
         float f = getResources().getDisplayMetrics().widthPixels/2f;
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width);
-        objectAnimator.setDuration(200);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
+        objectAnimator.setDuration(600);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.start();
     }
@@ -146,5 +171,14 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+    }
+
+    @Override
+    public void accept(boolean isCheck) {
+        if (isCheck) {
+            mService.showNotification();
+        } else {
+            mService.clearNotification();
+        }
     }
 }

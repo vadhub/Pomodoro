@@ -1,10 +1,12 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.vad.pomodoro.R;
 
 public class IndicatorRound {
 

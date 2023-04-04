@@ -1,6 +1,8 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.model;
 
 import android.os.CountDownTimer;
+
+import com.vad.pomodoro.TimerHandle;
 
 public class ChunkTimer extends CountDownTimer {
 

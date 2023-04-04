@@ -11,4 +11,5 @@
     <string name="round4">4</string>
     <string name="round2" translatable="false">2</string>
     <string name="relax">Descansar</string>
+    <string name="show_notification">Muestra la notificación</string>
 </resources>

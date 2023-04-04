@@ -12,5 +12,6 @@
     <string name="round4">4</string>
 
     <string name="relax">Rest</string>
+    <string name="show_notification">Show notification</string>
 
 </resources>

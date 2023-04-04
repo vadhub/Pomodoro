@@ -1,4 +1,4 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.ui;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

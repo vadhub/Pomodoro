@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal|center_vertical"
     android:background="?attr/colorOnPrimary"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -90,7 +90,6 @@
             android:src="@drawable/indicator_empty" />
 
     </LinearLayout>
-
 
     <!-- ca-app-pub-5356301729869498/1857939557 -->
 </androidx.constraintlayout.widget.ConstraintLayout>

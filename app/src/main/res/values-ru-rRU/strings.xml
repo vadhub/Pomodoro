@@ -11,4 +11,5 @@
     <string name="round3">3</string>
     <string name="round4">4</string>
     <string name="relax">Отдых</string>
+    <string name="show_notification">Показать уведомление</string>
 </resources>
