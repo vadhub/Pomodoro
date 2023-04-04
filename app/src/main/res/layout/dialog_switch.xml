@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Switch
+        android:id="@+id/switchService"
+        android:layout_width="wrap_content"
+        android:padding="16dp"
+        android:checked="true"
+        android:layout_height="wrap_content"
+        android:text="@string/show_notification"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <TextView
+        android:id="@+id/ok"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:textColor="@color/tomato"
+        android:layout_gravity="center"
+        android:text="@android:string/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

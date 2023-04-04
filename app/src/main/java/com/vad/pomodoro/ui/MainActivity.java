@@ -1,5 +1,6 @@
 package com.vad.pomodoro.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.vad.pomodoro.Consumer;
 import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TimerHandle;
@@ -27,14 +31,13 @@ import com.vad.pomodoro.TimerHandle;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle {
+public class MainActivity extends AppCompatActivity implements TimerHandle, Consumer {
 
     private TextView textTime;
     private Button buttonStart;
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
-    private Switch aSwitch;
 
     private TextView roundTextView;
 
@@ -72,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        aSwitch = (Switch) findViewById(R.id.switchService);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         anim = new ProgressBarAnimation(progressBar, 0, 1500);
         anim.setDuration(600);
@@ -91,13 +93,22 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
         Log.d("##service", "onCreate");
 
-        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                mService.showNotification();
-            } else {
-                mService.clearNotification();
-            }
-        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.just_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.settings) {
+            OptionDialogFragment dialogFragment = new OptionDialogFragment();
+            dialogFragment.show(getSupportFragmentManager(), "settings_fragment");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -160,5 +171,14 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+    }
+
+    @Override
+    public void accept(boolean isCheck) {
+        if (isCheck) {
+            mService.showNotification();
+        } else {
+            mService.clearNotification();
+        }
     }
 }
