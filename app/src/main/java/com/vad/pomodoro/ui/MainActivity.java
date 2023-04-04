@@ -16,14 +16,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.vad.pomodoro.Consumer;
+import com.vad.pomodoro.CheckOnService;
+import com.vad.pomodoro.KeepScreen;
 import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TimerHandle;
@@ -31,7 +32,7 @@ import com.vad.pomodoro.TimerHandle;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle, Consumer {
+public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen {
 
     private TextView textTime;
     private Button buttonStart;
@@ -179,6 +180,15 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Cons
             mService.showNotification();
         } else {
             mService.clearNotification();
+        }
+    }
+
+    @Override
+    public void keep(boolean isCheck) {
+        if (isCheck) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         }
     }
 }

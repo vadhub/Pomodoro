@@ -13,5 +13,6 @@
 
     <string name="relax">Rest</string>
     <string name="show_notification">Show notification</string>
+    <string name="screen_on">Screen on</string>
 
 </resources>

@@ -1,5 +1,5 @@
 package com.vad.pomodoro;
 
-public interface Consumer {
+public interface CheckOnService {
     void accept(boolean isCheck);
 }
