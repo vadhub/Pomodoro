@@ -15,9 +15,9 @@
         android:theme="@style/Theme.Pomodoro">
 
         <service
-            android:name=".MyService" />
+            android:name=".domain.MyService" />
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

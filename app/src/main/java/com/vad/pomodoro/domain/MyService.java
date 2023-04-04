@@ -1,11 +1,13 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.domain;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -14,6 +16,15 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import com.vad.pomodoro.R;
+import com.vad.pomodoro.RoundListener;
+import com.vad.pomodoro.TimeListener;
+import com.vad.pomodoro.TimerHandle;
+import com.vad.pomodoro.model.ChunkTimer;
+import com.vad.pomodoro.model.Pomodoro;
+import com.vad.pomodoro.ui.IndicatorRound;
+import com.vad.pomodoro.ui.TomatoNotificationService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +37,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     private NotificationCompat.Builder nb;
     private boolean isStart = false;
     private boolean isCanceled = false;
+    private boolean isShowNotification;
     private ChunkTimer chunkTimer;
     private int minutesInit;
     private long millisLeft;
@@ -60,13 +72,15 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         minutesInit = pomodoro.getMinutes();
         chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        startForeground(idNotification, nb.build());
+        showNotification();
     }
 
     @Override
     public void showTime(long timeUntilFinished) {
         millisLeft = timeUntilFinished;
-        showNotification(DateUtils.formatElapsedTime((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished)));
+        if (isShowNotification) {
+            showNotification(DateUtils.formatElapsedTime((int) TimeUnit.MILLISECONDS.toSeconds(timeUntilFinished)));
+        }
     }
 
     public void setTimer(Button buttonStart, TimerHandle handle) {
@@ -146,6 +160,18 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         stopSelf();
     }
 
+    @SuppressLint("NotificationId0")
+    public void clearNotification() {
+        isShowNotification = false;
+        startForeground(0, null);
+        notificationService.notificationClear(idNotification);
+    }
+
+    public void showNotification() {
+        isShowNotification = true;
+        startForeground(idNotification, nb.build());
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -155,7 +181,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         }
 
         chunkTimer = null;
-        notificationService.notificationClear(idNotification);
+        clearNotification();
         notificationService = null;
 
     }

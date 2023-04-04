@@ -1,6 +1,6 @@
 package com.vad.pomodoro;
 
-import static com.vad.pomodoro.TomatoNotificationService.ID_NOTIFICATION_CHANNEL;
+import static com.vad.pomodoro.ui.TomatoNotificationService.ID_NOTIFICATION_CHANNEL;
 
 import android.app.Application;
 import android.app.NotificationChannel;

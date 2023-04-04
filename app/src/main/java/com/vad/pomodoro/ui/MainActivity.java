@@ -1,4 +1,4 @@
-package com.vad.pomodoro;
+package com.vad.pomodoro.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +17,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.vad.pomodoro.domain.MyService;
+import com.vad.pomodoro.R;
+import com.vad.pomodoro.TimerHandle;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
+    private Switch aSwitch;
 
     private TextView roundTextView;
 
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        aSwitch = (Switch) findViewById(R.id.switchService);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         anim = new ProgressBarAnimation(progressBar, 0, 1500);
         anim.setDuration(600);
@@ -84,6 +91,13 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
 
         Log.d("##service", "onCreate");
 
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mService.showNotification();
+            } else {
+                mService.clearNotification();
+            }
+        });
     }
 
     @Override
@@ -92,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements TimerHandle {
         float width = buttonStart.getMeasuredWidth() / 2f;
         float f = getResources().getDisplayMetrics().widthPixels/2f;
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width);
-        objectAnimator.setDuration(200);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
+        objectAnimator.setDuration(600);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.start();
     }
