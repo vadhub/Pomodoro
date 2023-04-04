@@ -49,8 +49,6 @@ public class OptionDialogFragment extends DialogFragment {
         aSwitchScreen.setChecked(configuration.getKeepScreen());
         aSwitch.setChecked(configuration.getShowNotification());
 
-        Log.d("##Dialog", configuration.getKeepScreen()+" "+configuration.getShowNotification());
-
         aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             consumer.accept(isChecked);
             configuration.saveShowNotification(isChecked);

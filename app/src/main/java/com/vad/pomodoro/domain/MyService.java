@@ -47,7 +47,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
 
     @Override
     public void change(int round) {
-        Log.d("%%service", round+"");
         indicatorRound.changeRound(round);
     }
 
@@ -65,7 +64,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("##ms", "onCreate");
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
@@ -93,7 +91,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer.cancel();
             isCanceled = true;
         } else if (!isStart && isCanceled) {
-            System.out.println("start");
             checkAudioValue();
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
@@ -102,7 +99,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer.start();
             isCanceled = false;
         } else {
-            System.out.println("start1");
             checkAudioValue();
             chunkTimer = null;
             chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000,  new TimerHandle[]{this, handle});
@@ -132,7 +128,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         //play gong
         mediaPlayer.start();
         pomodoro.finishRound();
-        System.out.println("##pomod" + minutesInit);
         isStart = false;
         isCanceled = false;
     }

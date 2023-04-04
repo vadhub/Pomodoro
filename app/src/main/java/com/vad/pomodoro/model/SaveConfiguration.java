@@ -17,8 +17,6 @@ public class SaveConfiguration {
         SharedPreferences.Editor ed = prefer.edit();
         ed.putBoolean("is_show", isShow);
         ed.apply();
-
-        Log.d("##Config", "save"+isShow);
     }
 
     public void saveKeepScreen(boolean isOn) {

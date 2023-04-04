@@ -24,17 +24,13 @@ public class Pomodoro {
         round++;
         if (round % 2 == 0) {
             currentState = SHORT;
-            Log.d("Pomodoro", "short");
             if (round == 8) {
                 round = 0;
                 currentState = LONG;
-                Log.d("Pomodoro", "LONG");
             }
         } else {
-            Log.d("Pomodoro", "work");
             currentState = WORK;
         }
-        Log.d("Pomodoro", round+"");
         listener.change(round);
     }
 
