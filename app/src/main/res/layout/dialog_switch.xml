@@ -15,6 +15,15 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Switch
+        android:id="@+id/switchTikTak"
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:checked="true"
+        android:layout_height="wrap_content"
+        android:text="@string/ticking"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
         android:id="@+id/switchScreen"
         android:layout_width="match_parent"
         android:padding="16dp"

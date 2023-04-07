@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
+import com.vad.pomodoro.TikTakListener;
 import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TimerHandle;
@@ -32,7 +33,7 @@ import com.vad.pomodoro.TimerHandle;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen {
+public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakListener {
 
     private TextView textTime;
     private Button buttonStart;
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         float f = getResources().getDisplayMetrics().widthPixels/2f;
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
-        objectAnimator.setDuration(600);
+        objectAnimator.setDuration(500);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.start();
     }
@@ -185,6 +186,13 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             getWindow().addFlags(flags);
         } else {
             getWindow().clearFlags(flags);
+        }
+    }
+
+    @Override
+    public void onSwitch(boolean isOn) {
+        if (mService != null) {
+            mService.onSwitch(isOn);
         }
     }
 }

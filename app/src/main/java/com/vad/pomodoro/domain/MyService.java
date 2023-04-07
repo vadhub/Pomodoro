@@ -19,6 +19,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.RoundListener;
+import com.vad.pomodoro.TikTakListener;
 import com.vad.pomodoro.TimeListener;
 import com.vad.pomodoro.TimerHandle;
 import com.vad.pomodoro.model.ChunkTimer;
@@ -31,12 +32,14 @@ import java.util.concurrent.TimeUnit;
 public class MyService extends Service implements TimerHandle, RoundListener, TimeListener {
 
     private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayerTikTak;
     private AudioManager manager;
     private final int idNotification = 0x11234c;
     private TomatoNotificationService notificationService;
     private NotificationCompat.Builder nb;
     private boolean isStart = false;
     private boolean isCanceled = false;
+    private boolean isOnTicTak = true;
     private boolean isShowNotification;
     private ChunkTimer chunkTimer;
     private int minutesInit;
@@ -55,6 +58,14 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         minutesInit = time;
     }
 
+    public void onSwitch(boolean isOn) {
+        isOnTicTak = isOn;
+
+        if (!isOn) {
+            stopTikTak();
+        }
+    }
+
     public class BinderTimer extends Binder {
         public MyService getService() {
             return MyService.this;
@@ -65,6 +76,9 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     public void onCreate() {
         super.onCreate();
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
+        mediaPlayerTikTak = MediaPlayer.create(this, R.raw.tiktak);
+        mediaPlayerTikTak.setLooping(true);
+
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
@@ -86,11 +100,15 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
+
+            stopTikTak();
+
             buttonStart.setText(getResources().getString(R.string.start_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
             chunkTimer.cancel();
             isCanceled = true;
         } else if (!isStart && isCanceled) {
+            startTickTak();
             checkAudioValue();
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
@@ -99,6 +117,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer.start();
             isCanceled = false;
         } else {
+            startTickTak();
             checkAudioValue();
             chunkTimer = null;
             chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000,  new TimerHandle[]{this, handle});
@@ -109,6 +128,16 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         }
 
         isStart = !isStart;
+    }
+
+    private void stopTikTak() {
+        if (mediaPlayerTikTak != null && mediaPlayerTikTak.isPlaying()) {
+            mediaPlayerTikTak.start();
+        }
+    }
+
+    private void startTickTak() {
+        if (isOnTicTak) mediaPlayerTikTak.start();
     }
 
     private void checkAudioValue() {
@@ -125,6 +154,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     //start signal of timeout
     @Override
     public void stopTimer() {
+        stopTikTak();
         //play gong
         mediaPlayer.start();
         pomodoro.finishRound();
@@ -173,6 +203,11 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer = null;
+        }
+
+        if (mediaPlayerTikTak != null) {
+            mediaPlayerTikTak.stop();
+            mediaPlayerTikTak = null;
         }
 
         chunkTimer = null;

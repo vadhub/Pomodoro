@@ -17,12 +17,14 @@ import androidx.fragment.app.DialogFragment;
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
 import com.vad.pomodoro.R;
+import com.vad.pomodoro.TikTakListener;
 import com.vad.pomodoro.model.SaveConfiguration;
 
 public class OptionDialogFragment extends DialogFragment {
 
     private CheckOnService consumer;
     private KeepScreen keepScreen;
+    private TikTakListener tikTakListener;
 
     private SaveConfiguration configuration;
 
@@ -31,6 +33,7 @@ public class OptionDialogFragment extends DialogFragment {
         super.onAttach(context);
         consumer = (CheckOnService) context;
         keepScreen = (KeepScreen) context;
+        tikTakListener = (TikTakListener) context;
         configuration = new SaveConfiguration(context);
     }
 
@@ -45,6 +48,7 @@ public class OptionDialogFragment extends DialogFragment {
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch aSwitch = (Switch) view.findViewById(R.id.switchService);
         Switch aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
+        Switch aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
 
         aSwitchScreen.setChecked(configuration.getKeepScreen());
         aSwitch.setChecked(configuration.getShowNotification());
@@ -56,6 +60,10 @@ public class OptionDialogFragment extends DialogFragment {
         aSwitchScreen.setOnCheckedChangeListener((buttonView, isChecked) -> {
             keepScreen.keep(isChecked);
             configuration.saveKeepScreen(isChecked);
+        });
+        aSwitchTik.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            tikTakListener.onSwitch(isChecked);
+            configuration.saveSoundTikTak(isChecked);
         });
 
         TextView textView = (TextView) view.findViewById(R.id.ok);
