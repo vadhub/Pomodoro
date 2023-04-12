@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
+import com.vad.pomodoro.TikTakHandler;
+import com.vad.pomodoro.TikTakListener;
 import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TimerHandle;
@@ -32,7 +34,7 @@ import com.vad.pomodoro.TimerHandle;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen {
+public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakHandler {
 
     private TextView textTime;
     private Button buttonStart;
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
             mService.setIndicator(indicatorRound);
-            Log.d("##service", "onServiceConnected"+secondsInit);
         }
 
         @Override
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private void bindService() {
         Intent intent = new Intent(this, MyService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        Log.d("##service", "bindService");
     }
 
     @Override
@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         fourRound = findViewById(R.id.fourRound);
 
         indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView, progressBar);
-
-        Log.d("##service", "onCreate");
 
     }
 
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         float f = getResources().getDisplayMetrics().widthPixels/2f;
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
-        objectAnimator.setDuration(600);
+        objectAnimator.setDuration(500);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.start();
     }
@@ -129,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         super.onStart();
         bindService();
         setTimer();
-        Log.d("##4", textTime.getX()+" "+textTime.getWidth());
     }
 
     //switch start and stop timer
@@ -162,9 +159,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private void setTimer() {
         if (mService != null) {
             secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
-            Log.d("##service", "1");
         } else {
-            Log.d("##service", "2");
             secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
         }
 
@@ -185,10 +180,20 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
     @Override
     public void keep(boolean isCheck) {
+
+        int flags = WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+
         if (isCheck) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            getWindow().addFlags(flags);
         } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            getWindow().clearFlags(flags);
+        }
+    }
+
+    @Override
+    public void onSwitch(boolean isOn) {
+        if (mService != null) {
+            mService.onSwitch(isOn);
         }
     }
 }

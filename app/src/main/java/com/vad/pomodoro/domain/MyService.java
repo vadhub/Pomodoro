@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -23,6 +21,7 @@ import com.vad.pomodoro.TimeListener;
 import com.vad.pomodoro.TimerHandle;
 import com.vad.pomodoro.model.ChunkTimer;
 import com.vad.pomodoro.model.Pomodoro;
+import com.vad.pomodoro.model.TikTakHandle;
 import com.vad.pomodoro.ui.IndicatorRound;
 import com.vad.pomodoro.ui.TomatoNotificationService;
 
@@ -44,16 +43,20 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     private final Pomodoro pomodoro = new Pomodoro(this, this);
     private IndicatorRound indicatorRound;
     private final IBinder binder = new BinderTimer();
+    private TikTakHandle tikTakHandle;
 
     @Override
     public void change(int round) {
-        Log.d("%%service", round+"");
         indicatorRound.changeRound(round);
     }
 
     @Override
     public void changeTime(int time) {
         minutesInit = time;
+    }
+
+    public void onSwitch(boolean isOn) {
+        tikTakHandle.onSwitch(isOn);
     }
 
     public class BinderTimer extends Binder {
@@ -65,8 +68,8 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("##ms", "onCreate");
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
+        tikTakHandle = new TikTakHandle(this);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
@@ -92,8 +95,9 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
             chunkTimer.cancel();
             isCanceled = true;
+            tikTakHandle.stopTikTak();
         } else if (!isStart && isCanceled) {
-            System.out.println("start");
+            tikTakHandle.startTickTak();
             checkAudioValue();
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
@@ -102,7 +106,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer.start();
             isCanceled = false;
         } else {
-            System.out.println("start1");
+            tikTakHandle.startTickTak();
             checkAudioValue();
             chunkTimer = null;
             chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000,  new TimerHandle[]{this, handle});
@@ -132,7 +136,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         //play gong
         mediaPlayer.start();
         pomodoro.finishRound();
-        System.out.println("##pomod" + minutesInit);
         isStart = false;
         isCanceled = false;
     }
@@ -179,6 +182,8 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             mediaPlayer.stop();
             mediaPlayer = null;
         }
+
+        tikTakHandle.cancel();
 
         chunkTimer = null;
         clearNotification();

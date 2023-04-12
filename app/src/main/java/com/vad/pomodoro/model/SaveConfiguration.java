@@ -6,7 +6,7 @@ import android.util.Log;
 
 public class SaveConfiguration {
     private SharedPreferences prefer;
-    private Context context;
+    private final Context context;
 
     public SaveConfiguration(Context context) {
         this.context = context;
@@ -17,12 +17,17 @@ public class SaveConfiguration {
         SharedPreferences.Editor ed = prefer.edit();
         ed.putBoolean("is_show", isShow);
         ed.apply();
-
-        Log.d("##Config", "save"+isShow);
     }
 
     public void saveKeepScreen(boolean isOn) {
         prefer = context.getSharedPreferences("pomodoro_save_keep_screen", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = prefer.edit();
+        ed.putBoolean("is_on", isOn);
+        ed.apply();
+    }
+
+    public void saveSoundTikTak(boolean isOn) {
+        prefer = context.getSharedPreferences("pomodoro_save_tiktak", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = prefer.edit();
         ed.putBoolean("is_on", isOn);
         ed.apply();
@@ -35,6 +40,11 @@ public class SaveConfiguration {
 
     public boolean getKeepScreen() {
         prefer = context.getSharedPreferences("pomodoro_save_keep_screen", Context.MODE_PRIVATE);
+        return prefer.getBoolean("is_on", false);
+    }
+
+    public boolean geSoundTikTak() {
+        prefer = context.getSharedPreferences("pomodoro_save_tiktak", Context.MODE_PRIVATE);
         return prefer.getBoolean("is_on", false);
     }
 }

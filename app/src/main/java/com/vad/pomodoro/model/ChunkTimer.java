@@ -33,6 +33,5 @@ public class ChunkTimer extends CountDownTimer {
         for (TimerHandle handle: timerHandles) {
             handle.stopTimer();
         }
-        System.out.println("FINISH");
     }
 }

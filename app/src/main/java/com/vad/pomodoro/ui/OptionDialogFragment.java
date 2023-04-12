@@ -3,7 +3,6 @@ package com.vad.pomodoro.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,14 @@ import androidx.fragment.app.DialogFragment;
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
 import com.vad.pomodoro.R;
+import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.model.SaveConfiguration;
 
 public class OptionDialogFragment extends DialogFragment {
 
     private CheckOnService consumer;
     private KeepScreen keepScreen;
+    private TikTakHandler tikTakHandler;
 
     private SaveConfiguration configuration;
 
@@ -31,6 +32,7 @@ public class OptionDialogFragment extends DialogFragment {
         super.onAttach(context);
         consumer = (CheckOnService) context;
         keepScreen = (KeepScreen) context;
+        tikTakHandler = (TikTakHandler) context;
         configuration = new SaveConfiguration(context);
     }
 
@@ -45,11 +47,10 @@ public class OptionDialogFragment extends DialogFragment {
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch aSwitch = (Switch) view.findViewById(R.id.switchService);
         Switch aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
+        Switch aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
 
         aSwitchScreen.setChecked(configuration.getKeepScreen());
         aSwitch.setChecked(configuration.getShowNotification());
-
-        Log.d("##Dialog", configuration.getKeepScreen()+" "+configuration.getShowNotification());
 
         aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             consumer.accept(isChecked);
@@ -58,6 +59,10 @@ public class OptionDialogFragment extends DialogFragment {
         aSwitchScreen.setOnCheckedChangeListener((buttonView, isChecked) -> {
             keepScreen.keep(isChecked);
             configuration.saveKeepScreen(isChecked);
+        });
+        aSwitchTik.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            tikTakHandler.onSwitch(isChecked);
+            configuration.saveSoundTikTak(isChecked);
         });
 
         TextView textView = (TextView) view.findViewById(R.id.ok);
