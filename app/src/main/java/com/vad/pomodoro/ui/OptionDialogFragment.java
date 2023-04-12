@@ -44,13 +44,19 @@ public class OptionDialogFragment extends DialogFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch aSwitch = (Switch) view.findViewById(R.id.switchService);
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
 
         aSwitchScreen.setChecked(configuration.getKeepScreen());
         aSwitch.setChecked(configuration.getShowNotification());
+        aSwitchTik.setChecked(configuration.geSoundTikTak());
 
         aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             consumer.accept(isChecked);

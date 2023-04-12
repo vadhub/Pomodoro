@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TikTakListener;
 
+import java.io.IOException;
+
 public class TikTakHandle implements TikTakListener {
     private MediaPlayer mediaPlayerTikTak;
     private boolean isOnTicTak = true;
@@ -18,6 +20,11 @@ public class TikTakHandle implements TikTakListener {
     public void stopTikTak() {
         if (mediaPlayerTikTak != null && mediaPlayerTikTak.isPlaying()) {
             mediaPlayerTikTak.stop();
+            try {
+                mediaPlayerTikTak.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
