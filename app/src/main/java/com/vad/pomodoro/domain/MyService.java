@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -57,6 +58,10 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
 
     public void onSwitch(boolean isOn) {
         tikTakHandle.onSwitch(isOn);
+
+        if (isStart) {
+            tikTakHandle.startTickTak();
+        }
     }
 
     public class BinderTimer extends Binder {
@@ -96,6 +101,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer.cancel();
             isCanceled = true;
             tikTakHandle.stopTikTak();
+            Log.d("##service", "1");
         } else if (!isStart && isCanceled) {
             tikTakHandle.startTickTak();
             checkAudioValue();
@@ -105,6 +111,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer = new ChunkTimer(millisLeft, 1000, new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
+            Log.d("##service", "2");
         } else {
             tikTakHandle.startTickTak();
             checkAudioValue();
@@ -114,6 +121,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             isCanceled = false;
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
+            Log.d("##service", "3");
         }
 
         isStart = !isStart;
