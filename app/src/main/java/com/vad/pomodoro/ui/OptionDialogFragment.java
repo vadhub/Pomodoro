@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,13 +20,22 @@ import com.vad.pomodoro.R;
 import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.model.SaveConfiguration;
 
-public class OptionDialogFragment extends DialogFragment {
+public class OptionDialogFragment extends DialogFragment implements CompoundButton.OnCheckedChangeListener {
 
     private CheckOnService consumer;
     private KeepScreen keepScreen;
     private TikTakHandler tikTakHandler;
 
     private SaveConfiguration configuration;
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch aSwitchService;
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch aSwitchScreen;
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch aSwitchTik;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,33 +55,34 @@ public class OptionDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode")
-        Switch aSwitch = (Switch) view.findViewById(R.id.switchService);
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode")
-        Switch aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
-
-        @SuppressLint("UseSwitchCompatOrMaterialCode")
-        Switch aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
+        aSwitchService = (Switch) view.findViewById(R.id.switchService);
+        aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
+        aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
 
         aSwitchScreen.setChecked(configuration.getKeepScreen());
-        aSwitch.setChecked(configuration.getShowNotification());
+        aSwitchService.setChecked(configuration.getShowNotification());
         aSwitchTik.setChecked(configuration.geSoundTikTak());
 
-        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            consumer.accept(isChecked);
-            configuration.saveShowNotification(isChecked);
-        });
-        aSwitchScreen.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            keepScreen.keep(isChecked);
-            configuration.saveKeepScreen(isChecked);
-        });
-        aSwitchTik.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            tikTakHandler.onSwitch(isChecked);
-            configuration.saveSoundTikTak(isChecked);
-        });
+        aSwitchScreen.setOnCheckedChangeListener(this);
+        aSwitchService.setOnCheckedChangeListener(this);
+        aSwitchTik.setOnCheckedChangeListener(this);
 
         TextView textView = (TextView) view.findViewById(R.id.ok);
         textView.setOnClickListener(v -> dismiss());
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (aSwitchService.equals(buttonView)) {
+            consumer.accept(isChecked);
+            configuration.saveShowNotification(isChecked);
+        } else if (aSwitchScreen.equals(buttonView)) {
+            keepScreen.keep(isChecked);
+            configuration.saveKeepScreen(isChecked);
+        } else if (aSwitchTik.equals(buttonView)) {
+            tikTakHandler.onSwitch(isChecked);
+            configuration.saveSoundTikTak(isChecked);
+        }
     }
 }
