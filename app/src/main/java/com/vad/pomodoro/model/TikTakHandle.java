@@ -1,7 +1,9 @@
 package com.vad.pomodoro.model;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TikTakListener;
@@ -9,35 +11,32 @@ import com.vad.pomodoro.TikTakListener;
 import java.io.IOException;
 
 public class TikTakHandle implements TikTakListener {
-    private MediaPlayer mediaPlayerTikTak;
+    private SoundPool soundPool;
     private boolean isOnTicTak = true;
+    private int soundId;
 
     public TikTakHandle(Context context) {
-        mediaPlayerTikTak = MediaPlayer.create(context, R.raw.tiktak);
-        mediaPlayerTikTak.setLooping(true);
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 100);
+        soundId = soundPool.load(context, R.raw.tk, 1);
     }
 
     public void stopTikTak() {
-        if (mediaPlayerTikTak != null && mediaPlayerTikTak.isPlaying()) {
-            mediaPlayerTikTak.stop();
-            try {
-                mediaPlayerTikTak.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (soundPool != null) {
+            soundPool.stop(soundId);
         }
     }
 
     public void startTickTak() {
         if (isOnTicTak) {
-            mediaPlayerTikTak.start();
+            soundPool.play(soundId, 1, 1, 0, -1, 1);
         }
     }
 
     public void cancel() {
-        if (mediaPlayerTikTak != null) {
-            mediaPlayerTikTak.stop();
-            mediaPlayerTikTak = null;
+        if (soundPool != null) {
+            soundPool.stop(soundId);
+            soundPool.release();
+            soundPool = null;
         }
     }
 
