@@ -55,7 +55,6 @@ public class OptionDialogFragment extends DialogFragment implements CompoundButt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-
         aSwitchService = (Switch) view.findViewById(R.id.switchService);
         aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
         aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
@@ -64,8 +63,8 @@ public class OptionDialogFragment extends DialogFragment implements CompoundButt
         aSwitchService.setChecked(configuration.getShowNotification());
         aSwitchTik.setChecked(configuration.geSoundTikTak());
 
-        aSwitchScreen.setOnCheckedChangeListener(this);
         aSwitchService.setOnCheckedChangeListener(this);
+        aSwitchScreen.setOnCheckedChangeListener(this);
         aSwitchTik.setOnCheckedChangeListener(this);
 
         TextView textView = (TextView) view.findViewById(R.id.ok);
