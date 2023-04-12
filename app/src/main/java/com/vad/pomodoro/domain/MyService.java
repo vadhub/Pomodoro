@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,11 +17,11 @@ import androidx.core.app.NotificationCompat;
 
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.RoundListener;
-import com.vad.pomodoro.TikTakListener;
 import com.vad.pomodoro.TimeListener;
 import com.vad.pomodoro.TimerHandle;
 import com.vad.pomodoro.model.ChunkTimer;
 import com.vad.pomodoro.model.Pomodoro;
+import com.vad.pomodoro.model.TikTakHandle;
 import com.vad.pomodoro.ui.IndicatorRound;
 import com.vad.pomodoro.ui.TomatoNotificationService;
 
@@ -32,14 +30,12 @@ import java.util.concurrent.TimeUnit;
 public class MyService extends Service implements TimerHandle, RoundListener, TimeListener {
 
     private MediaPlayer mediaPlayer;
-    private MediaPlayer mediaPlayerTikTak;
     private AudioManager manager;
     private final int idNotification = 0x11234c;
     private TomatoNotificationService notificationService;
     private NotificationCompat.Builder nb;
     private boolean isStart = false;
     private boolean isCanceled = false;
-    private boolean isOnTicTak = true;
     private boolean isShowNotification;
     private ChunkTimer chunkTimer;
     private int minutesInit;
@@ -47,6 +43,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     private final Pomodoro pomodoro = new Pomodoro(this, this);
     private IndicatorRound indicatorRound;
     private final IBinder binder = new BinderTimer();
+    private TikTakHandle tikTakHandle;
 
     @Override
     public void change(int round) {
@@ -59,11 +56,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     }
 
     public void onSwitch(boolean isOn) {
-        isOnTicTak = isOn;
-
-        if (!isOn) {
-            stopTikTak();
-        }
+        tikTakHandle.onSwitch(isOn);
     }
 
     public class BinderTimer extends Binder {
@@ -76,9 +69,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     public void onCreate() {
         super.onCreate();
         mediaPlayer = MediaPlayer.create(this, R.raw.gong);
-        mediaPlayerTikTak = MediaPlayer.create(this, R.raw.tiktak);
-        mediaPlayerTikTak.setLooping(true);
-
+        tikTakHandle = new TikTakHandle(this);
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
@@ -100,15 +91,13 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
-
-            stopTikTak();
-
             buttonStart.setText(getResources().getString(R.string.start_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
             chunkTimer.cancel();
             isCanceled = true;
+            tikTakHandle.stopTikTak();
         } else if (!isStart && isCanceled) {
-            startTickTak();
+            tikTakHandle.startTickTak();
             checkAudioValue();
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
@@ -117,7 +106,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             chunkTimer.start();
             isCanceled = false;
         } else {
-            startTickTak();
+            tikTakHandle.startTickTak();
             checkAudioValue();
             chunkTimer = null;
             chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000,  new TimerHandle[]{this, handle});
@@ -128,16 +117,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         }
 
         isStart = !isStart;
-    }
-
-    private void stopTikTak() {
-        if (mediaPlayerTikTak != null && mediaPlayerTikTak.isPlaying()) {
-            mediaPlayerTikTak.start();
-        }
-    }
-
-    private void startTickTak() {
-        if (isOnTicTak) mediaPlayerTikTak.start();
     }
 
     private void checkAudioValue() {
@@ -154,7 +133,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     //start signal of timeout
     @Override
     public void stopTimer() {
-        stopTikTak();
         //play gong
         mediaPlayer.start();
         pomodoro.finishRound();
@@ -205,10 +183,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             mediaPlayer = null;
         }
 
-        if (mediaPlayerTikTak != null) {
-            mediaPlayerTikTak.stop();
-            mediaPlayerTikTak = null;
-        }
+        tikTakHandle.cancel();
 
         chunkTimer = null;
         clearNotification();

@@ -3,7 +3,6 @@ package com.vad.pomodoro.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,14 @@ import androidx.fragment.app.DialogFragment;
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
 import com.vad.pomodoro.R;
-import com.vad.pomodoro.TikTakListener;
+import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.model.SaveConfiguration;
 
 public class OptionDialogFragment extends DialogFragment {
 
     private CheckOnService consumer;
     private KeepScreen keepScreen;
-    private TikTakListener tikTakListener;
+    private TikTakHandler tikTakHandler;
 
     private SaveConfiguration configuration;
 
@@ -33,7 +32,7 @@ public class OptionDialogFragment extends DialogFragment {
         super.onAttach(context);
         consumer = (CheckOnService) context;
         keepScreen = (KeepScreen) context;
-        tikTakListener = (TikTakListener) context;
+        tikTakHandler = (TikTakHandler) context;
         configuration = new SaveConfiguration(context);
     }
 
@@ -62,7 +61,7 @@ public class OptionDialogFragment extends DialogFragment {
             configuration.saveKeepScreen(isChecked);
         });
         aSwitchTik.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            tikTakListener.onSwitch(isChecked);
+            tikTakHandler.onSwitch(isChecked);
             configuration.saveSoundTikTak(isChecked);
         });
 

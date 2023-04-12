@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
+import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.TikTakListener;
 import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.R;
@@ -33,7 +34,7 @@ import com.vad.pomodoro.TimerHandle;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakListener {
+public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakHandler {
 
     private TextView textTime;
     private Button buttonStart;
