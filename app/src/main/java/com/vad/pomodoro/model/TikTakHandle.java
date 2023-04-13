@@ -1,34 +1,62 @@
 package com.vad.pomodoro.model;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.Log;
 
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TikTakListener;
 
-import java.io.IOException;
-
 public class TikTakHandle implements TikTakListener {
     private SoundPool soundPool;
-    private boolean isOnTicTak = true;
-    private int soundId;
+    private boolean isOnTicTak;
+    private int soundId = 1;
+    private final Context context;
 
     public TikTakHandle(Context context) {
-        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 100);
-        soundId = soundPool.load(context, R.raw.tk, 1);
+        this.context = context;
+        SaveConfiguration configuration = new SaveConfiguration(context);
+        isOnTicTak = configuration.geSoundTikTak();
+
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .setMaxStreams(1)
+                .build();
+        soundPool.load(context, R.raw.tk, 1);
     }
 
-    public void stopTikTak() {
+    public void stop() {
         if (soundPool != null) {
             soundPool.stop(soundId);
+            soundPool.release();
         }
     }
 
-    public void startTickTak() {
+    public void pause() {
+        if (soundPool != null) {
+            soundPool.pause(soundId);
+            Log.d("##tiktak", "pauseTickTak: " + soundId);
+        }
+    }
+
+    public void resume() {
         if (isOnTicTak) {
-            soundPool.play(soundId, 1, 1, 0, -1, 1);
+            soundPool.resume(soundId);
+            Log.d("##tiktak", "resumeTickTak: " + soundId);
+        }
+    }
+
+    public void play() {
+        if (isOnTicTak) {
+            soundPool.play(soundId, 1, 1, 1, -1, 1);
+            Log.d("##tiktak", "startTickTak: " + soundId);
         }
     }
 
@@ -42,9 +70,13 @@ public class TikTakHandle implements TikTakListener {
 
     @Override
     public void onSwitch(boolean isOn) {
+        Log.d("##tiktak", "onSwitch: " + isOn);
         isOnTicTak = isOn;
         if (!isOn) {
-            stopTikTak();
+            Log.d("##tiktak", "onSwitchif: " + isOn);
+            stop();
+        } else {
+            play();
         }
     }
 }

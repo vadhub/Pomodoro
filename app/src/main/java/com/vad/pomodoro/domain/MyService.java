@@ -60,7 +60,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         tikTakHandle.onSwitch(isOn);
 
         if (isStart) {
-            tikTakHandle.startTickTak();
+            tikTakHandle.play();
         }
     }
 
@@ -78,7 +78,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
-        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
+        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.SECONDS), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         showNotification();
     }
@@ -100,10 +100,10 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24), null, null, null);
             chunkTimer.cancel();
             isCanceled = true;
-            tikTakHandle.stopTikTak();
+            tikTakHandle.pause();
             Log.d("##service", "1");
         } else if (!isStart && isCanceled) {
-            tikTakHandle.startTickTak();
+            tikTakHandle.resume();
             checkAudioValue();
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
@@ -113,10 +113,10 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             isCanceled = false;
             Log.d("##service", "2");
         } else {
-            tikTakHandle.startTickTak();
+            tikTakHandle.play();
             checkAudioValue();
             chunkTimer = null;
-            chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000,  new TimerHandle[]{this, handle});
+            chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.SECONDS), 1000,  new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
             buttonStart.setText(getResources().getString(R.string.pause_text));
@@ -143,6 +143,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     public void stopTimer() {
         //play gong
         mediaPlayer.start();
+        tikTakHandle.stop();
         pomodoro.finishRound();
         isStart = false;
         isCanceled = false;

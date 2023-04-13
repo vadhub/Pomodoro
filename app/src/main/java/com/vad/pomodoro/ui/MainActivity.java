@@ -158,9 +158,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
     private void setTimer() {
         if (mService != null) {
-            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.SECONDS);
         } else {
-            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.SECONDS);
         }
 
         progressBar.setAnimation(anim);
