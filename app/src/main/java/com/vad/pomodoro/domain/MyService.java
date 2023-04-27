@@ -103,7 +103,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             tikTakHandle.pause();
             Log.d("##service", "1");
         } else if (!isStart && isCanceled) {
-            tikTakHandle.resume();
+            tikTakHandle.play();
             checkAudioValue();
             buttonStart.setText(getResources().getString(R.string.pause_text));
             buttonStart.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_pause_24), null, null, null);
@@ -143,7 +143,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     public void stopTimer() {
         //play gong
         mediaPlayer.start();
-        tikTakHandle.stop();
+        tikTakHandle.pause();
         pomodoro.finishRound();
         isStart = false;
         isCanceled = false;
