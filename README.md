@@ -5,10 +5,28 @@ Simple application for time management. Uses the popular tomato technique as a r
 <table style="padding:10px">
   <tr>
     <td> 
-         <img src="https://drive.google.com/uc?export=view&id=1cvjVsvSQMUSHX4x6mw4-gGiprjfRWQrx"  alt="1" width = 279px height = 496px ></td>
+         <img src="https://github.com/vadhub/Pomodoro/blob/master/13.jpg?raw=true"  alt="1" width = 248px height = 496px></td>
       
  <td>
- <img src="https://drive.google.com/uc?export=view&id=1fjIxKLy2iniNz5b-0Tm78Z9R_363RVI8" align="right" alt="2" width = 279px height = 496px></td>
+ <img src="https://github.com/vadhub/Pomodoro/blob/master/123.jpg?raw=true" align="right" alt="2" width = 248px height = 496px ></td>
   </tr>
 </table>
+
+# application work
+
+in short:
+
+```Python
+#pseudocode
+  work = 25 min;
+  shortRest = 5 min;
+  longRest = 15 min;
+  
+  for range(1, 4): 
+    work;
+    if round == 4:
+      longRest;
+      repeat;
+    rest;
+```
 
