@@ -31,13 +31,6 @@ public class TikTakHandle implements TikTakListener {
         configuration.geSoundTikTak();
     }
 
-    public void stop() {
-        if (soundPool != null) {
-            soundPool.stop(soundId);
-            soundPool.release();
-        }
-    }
-
     public void pause() {
         Log.d("##tiktak", "volumeLow: " + soundId);
         soundPool.setVolume(soundId, 0f, 0f);
@@ -65,7 +58,7 @@ public class TikTakHandle implements TikTakListener {
         Log.d("##tiktak", "onSwitch: " + isOn);
         if (!isOn) {
             Log.d("##tiktak", "onSwitchif: " + false);
-            stop();
+            pause();
         } else {
             play();
         }
