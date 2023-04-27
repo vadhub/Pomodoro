@@ -2,7 +2,6 @@ package com.vad.pomodoro.model;
 
 import android.content.Context;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
 
@@ -11,7 +10,7 @@ import com.vad.pomodoro.TikTakListener;
 
 public class TikTakHandle implements TikTakListener {
     private SoundPool soundPool;
-    private int soundId = 1;
+    private int soundId;
     boolean isPlay;
 
     public TikTakHandle(Context context) {
