@@ -58,10 +58,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
 
     public void onSwitch(boolean isOn) {
         tikTakHandle.onSwitch(isOn);
-
-        if (isStart) {
-            tikTakHandle.play();
-        }
     }
 
     public class BinderTimer extends Binder {

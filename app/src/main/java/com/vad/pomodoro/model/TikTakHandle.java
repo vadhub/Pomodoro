@@ -11,7 +11,9 @@ import com.vad.pomodoro.TikTakListener;
 public class TikTakHandle implements TikTakListener {
     private SoundPool soundPool;
     private int soundId;
-    boolean isPlay;
+    private boolean isComplete;
+    private final SaveConfiguration configuration;
+    private boolean isPlay;
 
     public TikTakHandle(Context context) {
 
@@ -22,12 +24,12 @@ public class TikTakHandle implements TikTakListener {
 
         soundPool = new SoundPool.Builder().setMaxStreams(1).setAudioAttributes(attributes).build();
 
-        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> isPlay = true);
+        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> isComplete = true);
 
         soundId = soundPool.load(context, R.raw.tk, 1);
         Log.d("##tiktak", "set " + soundId);
-        SaveConfiguration configuration = new SaveConfiguration(context);
-        configuration.geSoundTikTak();
+        configuration = new SaveConfiguration(context);
+        isPlay = configuration.geSoundTikTak();
     }
 
     public void pause() {
@@ -37,11 +39,13 @@ public class TikTakHandle implements TikTakListener {
 
     public void play() {
         if (isPlay) {
-            soundId = soundPool.play(soundId, 0.99f, 0.99f, 1, -1, 0.99f);
-            Log.d("##tiktak", "set " + soundId);
-            isPlay = false;
+            if (isComplete) {
+                soundId = soundPool.play(soundId, 0.99f, 0.99f, 1, -1, 0.99f);
+                Log.d("##tiktak", "set " + soundId);
+                isComplete = false;
+            }
+            soundPool.setVolume(soundId, 0.99f, 0.99f);
         }
-        soundPool.setVolume(soundId, 0.99f, 0.99f);
     }
 
     public void cancel() {
@@ -55,6 +59,12 @@ public class TikTakHandle implements TikTakListener {
     @Override
     public void onSwitch(boolean isOn) {
         Log.d("##tiktak", "onSwitch: " + isOn);
+        configuration.saveSoundTikTak(isOn);
+        isPlay = configuration.geSoundTikTak();
+        if (!isPlay) {
+            pause();
+            return;
+        }
         if (!isOn) {
             Log.d("##tiktak", "onSwitchif: " + false);
             pause();
