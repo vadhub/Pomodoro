@@ -1,7 +1,5 @@
 package com.vad.pomodoro.model;
 
-import android.util.Log;
-
 import com.vad.pomodoro.RoundListener;
 import com.vad.pomodoro.TimeListener;
 

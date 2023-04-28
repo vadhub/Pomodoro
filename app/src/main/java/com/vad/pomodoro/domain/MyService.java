@@ -78,7 +78,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         notificationService = new TomatoNotificationService(this);
         nb = notificationService.showNotification();
         minutesInit = pomodoro.getMinutes();
-        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.SECONDS), 1000);
+        chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000);
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         showNotification();
     }
@@ -116,7 +116,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
             tikTakHandle.play();
             checkAudioValue();
             chunkTimer = null;
-            chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.SECONDS), 1000,  new TimerHandle[]{this, handle});
+            chunkTimer = new ChunkTimer(TimeUnit.MILLISECONDS.convert(minutesInit, TimeUnit.MINUTES), 1000,  new TimerHandle[]{this, handle});
             chunkTimer.start();
             isCanceled = false;
             buttonStart.setText(getResources().getString(R.string.pause_text));
