@@ -1,8 +1,5 @@
 package com.vad.pomodoro.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.ObjectAnimator;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,7 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +19,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
-import com.vad.pomodoro.TikTakHandler;
-import com.vad.pomodoro.TikTakListener;
-import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.R;
+import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.TimerHandle;
+import com.vad.pomodoro.domain.MyService;
+import com.yandex.mobile.ads.banner.AdSize;
+import com.yandex.mobile.ads.banner.BannerAdView;
+import com.yandex.mobile.ads.common.AdRequest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -75,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        BannerAdView mBanner = (BannerAdView) findViewById(R.id.adView);
+        mBanner.setAdUnitId("R-M-2304842-1");
+        mBanner.setAdSize(AdSize.stickySize(AdSize.FULL_SCREEN.getWidth()));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mBanner.loadAd(adRequest);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         anim = new ProgressBarAnimation(progressBar, 0, 1500);
@@ -158,9 +165,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
     private void setTimer() {
         if (mService != null) {
-            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.SECONDS);
+            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
         } else {
-            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.SECONDS);
+            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
         }
 
         progressBar.setAnimation(anim);

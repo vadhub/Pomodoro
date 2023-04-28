@@ -1,7 +1,5 @@
 package com.vad.pomodoro.model;
 
-import android.util.Log;
-
 import com.vad.pomodoro.RoundListener;
 import com.vad.pomodoro.TimeListener;
 
@@ -12,13 +10,12 @@ public class Pomodoro {
     private final RoundListener listener;
     private final TimeListener timeListener;
     private int currentState = WORK;
+    private int round = 1;
 
     public Pomodoro(RoundListener listener, TimeListener timeListener) {
         this.listener = listener;
         this.timeListener = timeListener;
     }
-
-    private int round = 1;
 
     public void changeRound() {
         round++;
