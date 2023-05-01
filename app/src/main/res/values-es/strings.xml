@@ -13,4 +13,5 @@
     <string name="relax">Descansar</string>
     <string name="show_notification">Muestra la notificación</string>
     <string name="screen_on">Pantalla en</string>
+    <string name="ticking">Tictac</string>
 </resources>
