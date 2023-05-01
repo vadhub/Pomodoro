@@ -10,8 +10,8 @@ android {
         applicationId "com.vad.pomodoro"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 6
-        versionName "1.1.0"
+        versionCode 9
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
