@@ -18,7 +18,7 @@ public class TikTakHandle implements TikTakListener {
     public TikTakHandle(Context context) {
 
         AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
+                .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build();
 
