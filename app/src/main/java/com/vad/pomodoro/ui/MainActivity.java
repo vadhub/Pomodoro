@@ -1,13 +1,19 @@
 package com.vad.pomodoro.ui;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +25,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
@@ -52,12 +62,19 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private ProgressBarAnimation anim;
     private IndicatorRound indicatorRound;
 
+    private boolean permissionPostNotification;
+
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MyService.BinderTimer binderTimer = (MyService.BinderTimer) service;
             mService = binderTimer.getService();
             mService.setIndicator(indicatorRound);
+            if (!permissionPostNotification) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    requestPermissionNotification();
+                }
+            }
         }
 
         @Override
@@ -99,6 +116,48 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
         indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView, progressBar);
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void requestPermissionNotification() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            permissionPostNotification = true;
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+
+                } else {
+
+                }
+
+                resultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+    }
+
+    private ActivityResultLauncher<String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted) {
+            permissionPostNotification = true;
+        } else {
+            permissionPostNotification = false;
+            showPermissionDialog();
+        }
+    });
+
+    public void showPermissionDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Alert for Permission")
+                .setPositiveButton("Settings", (dialog, which) -> {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                    dialog.dismiss();
+                }).setNegativeButton("Exit", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
     }
 
     @Override
