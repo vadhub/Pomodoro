@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         resetBtn.setOnClickListener(v -> {
             if (mService != null) {
                 mService.reset();
+                stopTimer();
             }
         });
 
