@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp">
 
-    <Switch
-        android:id="@+id/switchService"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:padding="16dp"
-        android:checked="true"
         android:layout_height="wrap_content"
-        android:text="@string/show_notification"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:orientation="vertical">
 
-    <Switch
-        android:id="@+id/switchTikTak"
-        android:layout_width="match_parent"
-        android:padding="16dp"
-        android:checked="true"
-        android:layout_height="wrap_content"
-        android:text="@string/ticking"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <Switch
+            android:id="@+id/switchService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:padding="16dp"
+            android:text="@string/show_notification"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <Switch
-        android:id="@+id/switchScreen"
-        android:layout_width="match_parent"
-        android:padding="16dp"
-        android:checked="false"
-        android:layout_height="wrap_content"
-        android:text="@string/screen_on"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <Switch
+            android:id="@+id/switchTikTak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:padding="16dp"
+            android:text="@string/ticking"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <TextView
-        android:id="@+id/ok"
-        android:textSize="16sp"
-        android:padding="16dp"
-        android:textColor="@color/tomato"
-        android:layout_gravity="center"
-        android:text="@android:string/ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <Switch
+            android:id="@+id/switchScreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:padding="16dp"
+            android:text="@string/screen_on"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="@android:string/ok"
+            android:textColor="@color/tomato"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
