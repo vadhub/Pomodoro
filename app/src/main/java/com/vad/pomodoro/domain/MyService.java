@@ -134,6 +134,15 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         this.indicatorRound = indicatorRound;
     }
 
+    public void reset() {
+        isStart = false;
+        isCanceled = false;
+        chunkTimer.cancel();
+        chunkTimer = null;
+        tikTakHandle.pause();
+        minutesInit = pomodoro.reset();
+    }
+
     //start signal of timeout
     @Override
     public void stopTimer() {
