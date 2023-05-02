@@ -100,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
 
+        Button resetBtn = findViewById(R.id.buttonReset);
+        resetBtn.setOnClickListener(v -> {
+            if (mService != null) {
+                mService.reset();
+            }
+        });
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         anim = new ProgressBarAnimation(progressBar, 0, 1500);
         anim.setDuration(600);
@@ -124,18 +131,12 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             permissionPostNotification = true;
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-
-                } else {
-
-                }
-
                 resultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
     }
 
-    private ActivityResultLauncher<String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+    private final ActivityResultLauncher<String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
         if (isGranted) {
             permissionPostNotification = true;
         } else {
