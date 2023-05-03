@@ -41,9 +41,6 @@ public class Pomodoro {
     }
 
     public int reset() {
-        currentState = WORK;
-        round = 1;
-        listener.change(round);
         return currentState;
     }
 }
