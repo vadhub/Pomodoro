@@ -14,4 +14,5 @@
     <string name="show_notification">Muestra la notificación</string>
     <string name="screen_on">Pantalla en</string>
     <string name="ticking">Tictac</string>
+    <string name="reset">reset</string>
 </resources>

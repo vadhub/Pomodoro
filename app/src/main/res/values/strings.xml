@@ -15,5 +15,6 @@
     <string name="show_notification">Show notification</string>
     <string name="screen_on">Screen on</string>
     <string name="ticking">Ticking</string>
+    <string name="reset">reset</string>
 
 </resources>
