@@ -50,9 +50,7 @@
         android:drawableLeft="@drawable/ic_baseline_restart_alt_24"
         android:onClick="onStartTimer"
         android:text="reset"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
 
 

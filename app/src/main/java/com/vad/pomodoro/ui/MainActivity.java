@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
     private TextView textTime;
     private Button buttonStart;
+    private Button buttonReset;
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
@@ -100,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
 
-        Button resetBtn = findViewById(R.id.buttonReset);
-        resetBtn.setOnClickListener(v -> {
+        buttonReset = findViewById(R.id.buttonReset);
+        buttonReset.setOnClickListener(v -> {
             if (mService != null) {
                 mService.reset();
                 stopTimer();
@@ -185,9 +186,14 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         float f = getResources().getDisplayMetrics().widthPixels/2f;
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
-        objectAnimator.setDuration(500);
+        objectAnimator.setDuration(200);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.start();
+
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(buttonReset, "translationX", f + width+10);
+        objectAnimator1.setDuration(300);
+        objectAnimator1.setInterpolator(new DecelerateInterpolator());
+        objectAnimator1.start();
     }
 
     @Override
