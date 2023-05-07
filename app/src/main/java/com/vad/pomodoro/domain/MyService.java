@@ -42,11 +42,17 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     private ChunkTimer chunkTimer;
     private int minutesInit;
     private long millisLeft;
-    private final Pomodoro pomodoro = new Pomodoro(this, this);
+    private Pomodoro pomodoro;
     private IndicatorRound indicatorRound;
     private final IBinder binder = new BinderTimer();
     private TikTakHandle tikTakHandle;
     private AlarmHandler alarmHandler;
+
+    public class BinderTimer extends Binder {
+        public MyService getService() {
+            return MyService.this;
+        }
+    }
 
     @Override
     public void change(int round) {
@@ -62,15 +68,14 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         tikTakHandle.onSwitch(isOn);
     }
 
-    public class BinderTimer extends Binder {
-        public MyService getService() {
-            return MyService.this;
-        }
+    public void pomodoroUpdate() {
+        pomodoro.updateTime();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        pomodoro = new Pomodoro(this, this, this);
         alarmHandler = new AlarmHandler(this);
         tikTakHandle = new TikTakHandle(this);
         notificationService = new TomatoNotificationService(this);
@@ -80,7 +85,6 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         showNotification();
     }
-
     @Override
     public void showTime(long timeUntilFinished) {
         millisLeft = timeUntilFinished;

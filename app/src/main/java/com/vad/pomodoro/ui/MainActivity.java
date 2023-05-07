@@ -36,10 +36,12 @@ import androidx.core.content.ContextCompat;
 
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
+import com.vad.pomodoro.PomodoroUpdate;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.TimerHandle;
 import com.vad.pomodoro.domain.MyService;
+import com.vad.pomodoro.model.SaveConfiguration;
 import com.yandex.mobile.ads.banner.AdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
 import com.yandex.mobile.ads.common.AdRequest;
@@ -47,7 +49,7 @@ import com.yandex.mobile.ads.common.AdRequest;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakHandler {
+public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakHandler, PomodoroUpdate {
 
     private TextView textTime;
     private Button buttonStart;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private ImageView fourRound;
     private ProgressBarAnimation anim;
     private IndicatorRound indicatorRound;
+    private SaveConfiguration configuration;
 
     private boolean permissionPostNotification;
 
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         twoRound = findViewById(R.id.twoRound);
         threeRound = findViewById(R.id.threeRound);
         fourRound = findViewById(R.id.fourRound);
+        configuration = new SaveConfiguration(this);
 
         indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView, progressBar);
 
@@ -232,7 +236,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         PowerManager.WakeLock  wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |
                 PowerManager.ACQUIRE_CAUSES_WAKEUP |
                 PowerManager.ON_AFTER_RELEASE, "appname::WakeLock");
-
         wakeLock.acquire(10*60*1000L /*10 minutes*/);
 
         setTimer();
@@ -244,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         if (mService != null) {
             secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
         } else {
-            secondsInit = (int) TimeUnit.SECONDS.convert(25, TimeUnit.MINUTES);
+            secondsInit = (int) TimeUnit.SECONDS.convert(configuration.getPomodoro(), TimeUnit.MINUTES);
         }
 
         progressBar.setAnimation(anim);
@@ -278,6 +281,14 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     public void onSwitch(boolean isOn) {
         if (mService != null) {
             mService.onSwitch(isOn);
+        }
+    }
+
+    @Override
+    public void update() {
+        if(mService != null) {
+            mService.pomodoroUpdate();
+            setTimer();
         }
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -72,6 +73,12 @@ public class OptionDialogFragment extends DialogFragment implements CompoundButt
 
         TextView textView = (TextView) view.findViewById(R.id.ok);
         textView.setOnClickListener(v -> dismiss());
+
+        Button openSettings = view.findViewById(R.id.openSetPomodoro);
+        openSettings.setOnClickListener(v -> {
+            PomodoroSettingsDialog dialogFragment = new PomodoroSettingsDialog();
+            dialogFragment.show(getActivity().getSupportFragmentManager(), "settings_pomodoro_fragment");
+        });
     }
 
     @Override
