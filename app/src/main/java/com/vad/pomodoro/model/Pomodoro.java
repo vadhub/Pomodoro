@@ -1,32 +1,43 @@
 package com.vad.pomodoro.model;
 
+import android.content.Context;
+
 import com.vad.pomodoro.RoundListener;
 import com.vad.pomodoro.TimeListener;
 
 public class Pomodoro {
-    private final static int WORK = 25;
-    private final static int SHORT = 5;
-    private final static int LONG = 15;
+    private int work;
+    private int mShort;
+    private int mLong;
     private final RoundListener listener;
     private final TimeListener timeListener;
-    private int currentState = WORK;
+    private int currentState;
     private int round = 1;
 
-    public Pomodoro(RoundListener listener, TimeListener timeListener) {
+    private final SaveConfiguration configuration;
+
+    public Pomodoro(RoundListener listener, TimeListener timeListener, Context context) {
         this.listener = listener;
         this.timeListener = timeListener;
+        configuration = new SaveConfiguration(context);
+
+        work = configuration.getPomodoro();
+        mShort = configuration.getShort();
+        mLong = configuration.getLong();
+
+        currentState = work;
     }
 
     public void changeRound() {
         round++;
         if (round % 2 == 0) {
-            currentState = SHORT;
+            currentState = mShort;
             if (round == 8) {
                 round = 0;
-                currentState = LONG;
+                currentState = mLong;
             }
         } else {
-            currentState = WORK;
+            currentState = work;
         }
         listener.change(round);
     }
@@ -42,5 +53,11 @@ public class Pomodoro {
 
     public int reset() {
         return currentState;
+    }
+
+    public void updateTime() {
+        work = configuration.getPomodoro();
+        this.mShort = configuration.getShort();
+        this.mLong = configuration.getLong();
     }
 }
