@@ -39,6 +39,13 @@
             android:text="@string/screen_on"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+        <Button
+            android:id="@+id/openSetPomodoro"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="set pomodoro"/>
+
         <TextView
             android:id="@+id/ok"
             android:layout_width="wrap_content"
@@ -48,7 +55,6 @@
             android:text="@android:string/ok"
             android:textColor="@color/tomato"
             android:textSize="16sp" />
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
