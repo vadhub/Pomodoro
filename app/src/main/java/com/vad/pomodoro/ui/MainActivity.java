@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private ImageView twoRound;
     private ImageView threeRound;
     private ImageView fourRound;
-    private ProgressBarAnimation anim;
     private IndicatorRound indicatorRound;
     private SaveConfiguration configuration;
 
@@ -115,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         });
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        anim = new ProgressBarAnimation(progressBar, 0, 1500);
-        anim.setDuration(600);
 
         buttonStart = (Button) findViewById(R.id.buttonStart);
         textTime = (TextView) findViewById(R.id.textTimer);
@@ -250,10 +247,12 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             secondsInit = (int) TimeUnit.SECONDS.convert(configuration.getPomodoro(), TimeUnit.MINUTES);
         }
 
-        progressBar.setAnimation(anim);
         progressBar.setMax(secondsInit);
         progressBar.setProgress(secondsInit);
         textTime.setText(DateUtils.formatElapsedTime(secondsInit));
+        ObjectAnimator.ofInt(progressBar, "progress", secondsInit)
+                .setDuration(600)
+                .start();
     }
 
     @Override
