@@ -69,7 +69,8 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     }
 
     public void pomodoroUpdate() {
-        pomodoro.updateTime();
+        pomodoro = new Pomodoro(this, this, this);
+        minutesInit = pomodoro.getMinutes();
     }
 
     @Override
@@ -145,7 +146,7 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         chunkTimer.cancel();
         chunkTimer = null;
         tikTakHandle.pause();
-        minutesInit = pomodoro.reset();
+        minutesInit = pomodoro.getMinutes();
     }
 
     //start signal of timeout
