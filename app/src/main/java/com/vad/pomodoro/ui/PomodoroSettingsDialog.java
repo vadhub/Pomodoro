@@ -47,20 +47,26 @@ public class PomodoroSettingsDialog extends DialogFragment implements NumberPick
         numberPickerPomodoro.setMinValue(25);
         numberPickerPomodoro.setMaxValue(60);
         Log.d("##ok", "onViewCreated: ");
+        numberPickerPomodoro.setValue(configuration.getPomodoro());
         numberPickerPomodoro.setOnValueChangedListener(this);
 
         numberPickerShort = view.findViewById(R.id.numberPickerShort);
         numberPickerShort.setMinValue(5);
         numberPickerShort.setMaxValue(15);
+        numberPickerShort.setValue(configuration.getShort());
         numberPickerShort.setOnValueChangedListener(this);
 
         numberPickerLong = view.findViewById(R.id.numberPickerLong);
         numberPickerLong.setMinValue(15);
         numberPickerLong.setMaxValue(30);
+        numberPickerLong.setValue(configuration.getLong());
         numberPickerLong.setOnValueChangedListener(this);
 
         TextView ok = view.findViewById(R.id.doneSetting);
-        ok.setOnClickListener(v -> dismiss());
+        ok.setOnClickListener(v -> {
+            pomodoroUpdate.update();
+            dismiss();
+        });
 
     }
 
@@ -68,13 +74,10 @@ public class PomodoroSettingsDialog extends DialogFragment implements NumberPick
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         if (picker.equals(numberPickerPomodoro)) {
             configuration.savePomodoro(newVal);
-            pomodoroUpdate.update();
         } else if (picker.equals(numberPickerShort)) {
             configuration.saveShort(newVal);
-            pomodoroUpdate.update();
         } else if (picker.equals(numberPickerLong)) {
             configuration.saveLong(newVal);
-            pomodoroUpdate.update();
         }
     }
 }

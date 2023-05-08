@@ -51,13 +51,4 @@ public class Pomodoro {
         return currentState;
     }
 
-    public int reset() {
-        return currentState;
-    }
-
-    public void updateTime() {
-        work = configuration.getPomodoro();
-        this.mShort = configuration.getShort();
-        this.mLong = configuration.getLong();
-    }
 }
