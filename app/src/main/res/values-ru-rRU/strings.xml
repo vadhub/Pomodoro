@@ -15,4 +15,5 @@
     <string name="screen_on">Экран включен</string>
     <string name="ticking">Тиканье</string>
     <string name="reset">заново</string>
+    <string name="set_pomodoro">помодоро</string>
 </resources>

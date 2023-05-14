@@ -15,4 +15,5 @@
     <string name="screen_on">Pantalla en</string>
     <string name="ticking">Tictac</string>
     <string name="reset">reset</string>
+    <string name="set_pomodoro">pomodoro</string>
 </resources>
