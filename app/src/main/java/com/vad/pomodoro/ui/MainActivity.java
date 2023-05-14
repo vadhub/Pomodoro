@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
         indicatorRound = new IndicatorRound(this, oneRound, twoRound, threeRound, fourRound, roundTextView, progressBar);
 
+        if (configuration.getKeepScreen()) {
+            int flags = WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+            getWindow().addFlags(flags);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
