@@ -16,5 +16,6 @@
     <string name="screen_on">Screen on</string>
     <string name="ticking">Ticking</string>
     <string name="reset">reset</string>
+    <string name="set_pomodoro">set pomodoro</string>
 
 </resources>
