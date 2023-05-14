@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         });
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        progressBar.setScaleX(-1f);
 
         buttonStart = (Button) findViewById(R.id.buttonStart);
         textTime = (TextView) findViewById(R.id.textTimer);
