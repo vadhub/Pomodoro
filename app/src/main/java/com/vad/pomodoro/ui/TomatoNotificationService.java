@@ -8,7 +8,6 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 
 import com.vad.pomodoro.R;
-import com.vad.pomodoro.ui.MainActivity;
 
 public class TomatoNotificationService {
     public static final String ID_NOTIFICATION_CHANNEL = "notification_timer";

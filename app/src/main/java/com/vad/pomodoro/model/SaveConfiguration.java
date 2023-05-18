@@ -2,7 +2,6 @@ package com.vad.pomodoro.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class SaveConfiguration {
     private SharedPreferences prefer;
