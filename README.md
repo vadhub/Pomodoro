@@ -22,9 +22,9 @@ in short:
 
 ```Python
 #pseudocode
-  work = 25 min;
-  shortRest = 5 min;
-  longRest = 15 min;
+  work = yourTime (default 25) min;
+  shortRest = yourTime (default 5) min;
+  longRest = yourTime (default 15) min;
   
   for range(1, 4): 
     work;
