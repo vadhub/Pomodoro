@@ -8,10 +8,6 @@ public class ChunkTimer extends CountDownTimer {
 
     private TimerHandle[] timerHandles;
 
-    public void setTimerHandles(TimerHandle[] timerHandles) {
-        this.timerHandles = timerHandles;
-    }
-
     public ChunkTimer(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
     }
