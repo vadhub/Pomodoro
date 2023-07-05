@@ -18,4 +18,6 @@
     <string name="reset">reset</string>
     <string name="set_pomodoro">set pomodoro</string>
 
+    <string name="back_press">Press back again to leave the app</string>
+
 </resources>

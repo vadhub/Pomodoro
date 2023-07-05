@@ -16,4 +16,5 @@
     <string name="ticking">Тиканье</string>
     <string name="reset">reset</string>
     <string name="set_pomodoro">помодоро</string>
+    <string name="back_press">Нажмите еще раз, чтобы выйти из приложения</string>
 </resources>
