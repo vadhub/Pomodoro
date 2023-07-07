@@ -8,9 +8,13 @@
     app:cardCornerRadius="16dp">
 
     <LinearLayout
-        android:padding="14sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="14sp"
+        android:paddingLeft="14sp"
+        android:paddingTop="14sp"
+        android:paddingEnd="14sp"
+        android:paddingRight="14sp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -19,9 +23,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="pomodoro" />
 
             <NumberPicker
@@ -38,9 +42,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="short" />
 
             <NumberPicker
@@ -67,9 +71,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="long" />
 
             <NumberPicker

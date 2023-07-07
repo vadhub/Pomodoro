@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="volume_audion">Aumente o volume do áudio</string>
+    <string name="pause_text">Pause</string>
+    <string name="start_text">Start</string>
+    <string name="app_name">Temporizador Pomodoro</string>
+    <string name="time">Tempo</string>
+    <string name="notification_channel">Usado para mostrar o tempo até o final do cronômetro de tomate</string>
+    <string name="relax">Descansar</string>
+    <string name="show_notification">Show notification</string>
+    <string name="screen_on">Tela ligada</string>
+    <string name="ticking">Tique-taque</string>
+    <string name="reset">reset</string>
+    <string name="set_pomodoro">definir pomodoro</string>
+    <string name="back_press">Pressione novamente para sair do aplicativo</string>
+</resources>

@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private ProgressBar progressBar;
     private int secondsInit;
     private MyService mService;
+    private long backPressedTime;
 
     private TextView roundTextView;
 
@@ -294,5 +296,18 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             mService.pomodoroUpdate();
             setTimer();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(this, getResources().getText(R.string.back_press), Toast.LENGTH_LONG).show();
+        }
+
+        backPressedTime = System.currentTimeMillis();
+
     }
 }
