@@ -249,9 +249,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
     private void setTimer() {
         if (mService != null) {
-            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.SECONDS);
+            secondsInit = (int) TimeUnit.SECONDS.convert(mService.getMinutesInit(), TimeUnit.MINUTES);
         } else {
-            secondsInit = (int) TimeUnit.SECONDS.convert(configuration.getPomodoro(), TimeUnit.SECONDS);
+            secondsInit = (int) TimeUnit.SECONDS.convert(configuration.getPomodoro(), TimeUnit.MINUTES);
         }
 
         progressBar.setMax(secondsInit);

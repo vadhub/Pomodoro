@@ -6,10 +6,6 @@
     <string name="start_text">Start</string>
     <string name="time">Время</string>
     <string name="notification_channel">Используется для отображения времени до окончания томатного таймера.</string>
-    <string name="round1">1</string>
-    <string name="round2">2</string>
-    <string name="round3">3</string>
-    <string name="round4">4</string>
     <string name="relax">Отдых</string>
     <string name="show_notification">Показать уведомление</string>
     <string name="screen_on">Экран включен</string>

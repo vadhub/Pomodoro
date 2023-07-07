@@ -6,10 +6,10 @@
     <string name="app_name">Pomodoro Timer</string>
     <string name="time">Time</string>
     <string name="notification_channel">Used for showing time until finish of tomato timer </string>
-    <string name="round1">1</string>
-    <string name="round2">2</string>
-    <string name="round3">3</string>
-    <string name="round4">4</string>
+    <string name="round1" translatable="false">1</string>
+    <string name="round2" translatable="false">2</string>
+    <string name="round3" translatable="false">3</string>
+    <string name="round4" translatable="false">4</string>
 
     <string name="relax">Rest</string>
     <string name="show_notification">Show notification</string>
