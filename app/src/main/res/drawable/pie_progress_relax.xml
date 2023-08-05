@@ -19,7 +19,7 @@
                 android:innerRadiusRatio="1200"
                 android:shape="ring"
                 android:thicknessRatio="2.1"
-                android:useLevel="false">
+                android:useLevel="true">
                 <gradient
                     android:centerColor="@color/green_middle"
                     android:endColor="@color/green_middle"
