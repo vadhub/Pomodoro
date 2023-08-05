@@ -31,11 +31,11 @@ public class IndicatorRound {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void setRelax() {
-        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle_relax));
+        progressBar.setProgressDrawable(context.getDrawable(R.drawable.pie_progress_relax));
     }
 
     public void setWork() {
-        progressBar.setProgressDrawable(context.getDrawable(R.drawable.circle));
+        progressBar.setProgressDrawable(context.getDrawable(R.drawable.pie_progress_work));
     }
 
     public void changeRound(int round) {
