@@ -7,7 +7,7 @@
         android:right="2dp"
         android:top="2dp">
         <shape android:shape="oval">
-            <solid android:color="@color/light_green" />
+            <solid android:color="@color/green_dark_light" />
             <stroke android:color="@android:color/transparent" />
         </shape>
     </item>
@@ -21,8 +21,8 @@
                 android:thicknessRatio="2.1"
                 android:useLevel="true">
                 <gradient
-                    android:centerColor="@color/green_middle"
-                    android:endColor="@color/green_middle"
+                    android:centerColor="@color/green"
+                    android:endColor="@color/green"
                     android:startColor="@color/green_middle"
                     android:type="sweep"
                     android:useLevel="false" />
