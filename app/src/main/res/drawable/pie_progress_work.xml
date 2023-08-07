@@ -7,7 +7,7 @@
         android:right="2dp"
         android:top="2dp">
         <shape android:shape="oval">
-            <solid android:color="@color/tomato_pale" />
+            <solid android:color="@color/tomato_pale_dark" />
             <stroke android:color="@android:color/transparent" />
         </shape>
     </item>
@@ -21,9 +21,9 @@
                 android:thicknessRatio="2.1"
                 android:useLevel="true">
                 <gradient
-                    android:centerColor="@color/tomato_pale_dark"
-                    android:endColor="@color/tomato_pale_dark"
-                    android:startColor="@color/tomato_pale_dark"
+                    android:centerColor="@color/tomato"
+                    android:endColor="@color/tomato"
+                    android:startColor="@color/tomato"
                     android:type="sweep"
                     android:useLevel="false" />
             </shape>
