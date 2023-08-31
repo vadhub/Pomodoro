@@ -16,6 +16,7 @@
         android:max="100"
         android:progress="100"
         app:indicatorSize="300dp"
+        app:indicatorColor="@color/tomato"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
