@@ -3,9 +3,9 @@ package com.vad.pomodoro.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.vad.pomodoro.R;
 
 public class IndicatorRound {
@@ -17,9 +17,9 @@ public class IndicatorRound {
     private final ImageView threeRound;
     private final ImageView fourRound;
     private final TextView roundTextView;
-    private final ProgressBar progressBar;
+    private final CircularProgressIndicator progressBar;
 
-    public IndicatorRound(Context context, ImageView oneRound, ImageView twoRound, ImageView threeRound, ImageView fourRound, TextView roundTextView, ProgressBar progressBar) {
+    public IndicatorRound(Context context, ImageView oneRound, ImageView twoRound, ImageView threeRound, ImageView fourRound, TextView roundTextView, CircularProgressIndicator progressBar) {
         this.context = context;
         this.oneRound = oneRound;
         this.twoRound = twoRound;
@@ -29,15 +29,19 @@ public class IndicatorRound {
         this.progressBar = progressBar;
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+
     public void setRelax() {
-        progressBar.setProgressDrawable(context.getDrawable(R.drawable.pie_progress_relax));
+        progressBar.setIndicatorColor(context.getResources().getColor(R.color.green));
+        progressBar.setTrackColor(context.getResources().getColor(R.color.light_green));
     }
 
+    @SuppressLint("ResourceAsColor")
     public void setWork() {
-        progressBar.setProgressDrawable(context.getDrawable(R.drawable.pie_progress_work));
+        progressBar.setIndicatorColor(context.getResources().getColor(R.color.tomato));
+        progressBar.setTrackColor(context.getResources().getColor(R.color.tomato_pale));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void changeRound(int round) {
         switch (round) {
             case 1:
@@ -55,7 +59,7 @@ public class IndicatorRound {
                 oneRound.setImageDrawable(context.getDrawable(R.drawable.indicator_full));
                 twoRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
                 threeRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
-                fourRound.setImageDrawable(context.getDrawable(R.drawable.indicator_empty));
+                fourRound.setImageDrawable(context.getDrawable(R.drawable.circle));
                 break;
 
             case 3:

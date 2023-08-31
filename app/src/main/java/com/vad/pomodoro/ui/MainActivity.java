@@ -2,6 +2,7 @@ package com.vad.pomodoro.ui;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,7 +26,6 @@ import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +36,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
 import com.vad.pomodoro.PomodoroUpdate;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     private TextView textTime;
     private Button buttonStart;
     private Button buttonReset;
-    private ProgressBar progressBar;
+    private CircularProgressIndicator progressBar;
     private int secondsInit;
     private MyService mService;
     private long backPressedTime;
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             }
         });
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        progressBar = (CircularProgressIndicator) findViewById(R.id.progressBar2);
         progressBar.setScaleX(-1f);
 
         buttonStart = (Button) findViewById(R.id.buttonStart);
@@ -236,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         progressBar.setProgress(seconds);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void stopTimer() {
         Log.d("##main", "stopTimer: ok");
