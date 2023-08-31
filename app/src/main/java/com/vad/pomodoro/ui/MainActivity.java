@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -120,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
         buttonStart = (Button) findViewById(R.id.buttonStart);
         textTime = (TextView) findViewById(R.id.textTimer);
+
+        textTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf"));
 
         roundTextView = (TextView) findViewById(R.id.numRoundTextView);
 
