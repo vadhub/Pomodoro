@@ -51,7 +51,6 @@ import com.yandex.mobile.ads.common.AdRequest;
 
 import java.util.concurrent.TimeUnit;
 
-
 public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakHandler, PomodoroUpdate {
 
     private TextView textTime;
@@ -191,23 +190,6 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        float width = buttonStart.getMeasuredWidth() / 2f;
-        float f = getResources().getDisplayMetrics().widthPixels/2f;
-
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
-        objectAnimator.setDuration(200);
-        objectAnimator.setInterpolator(new DecelerateInterpolator());
-        objectAnimator.start();
-
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(buttonReset, "translationX", f + width+10);
-        objectAnimator1.setDuration(300);
-        objectAnimator1.setInterpolator(new DecelerateInterpolator());
-        objectAnimator1.start();
     }
 
     @Override

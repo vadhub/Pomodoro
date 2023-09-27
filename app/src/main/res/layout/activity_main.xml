@@ -16,6 +16,7 @@
         android:max="100"
         android:progress="100"
         app:indicatorSize="300dp"
+        app:layout_constraintVertical_bias="0.3"
         app:indicatorColor="@color/tomato"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +44,8 @@
         android:drawableLeft="@drawable/ic_baseline_play_arrow_24"
         android:onClick="onStartTimer"
         android:text="@string/start_text"
-        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
 
     <Button
@@ -53,7 +55,8 @@
         android:layout_margin="8dp"
         android:drawableLeft="@drawable/ic_baseline_restart_alt_24"
         android:text="@string/reset"
-        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
 
 
