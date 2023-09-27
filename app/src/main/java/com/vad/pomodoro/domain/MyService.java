@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MyService extends Service implements TimerHandle, RoundListener, TimeListener {
 
-
     private AudioManager manager;
     private final int idNotification = 0x11234c;
     private TomatoNotificationService notificationService;
