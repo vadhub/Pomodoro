@@ -23,5 +23,7 @@
     <string name="pomodoro">Pomodoro</string>
     <string name="short_break">Short break</string>
     <string name="long_break">Long break</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
 
 </resources>

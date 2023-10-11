@@ -13,4 +13,5 @@
     <string name="reset">reset</string>
     <string name="set_pomodoro">definir pomodoro</string>
     <string name="back_press">Pressione novamente para sair do aplicativo</string>
+    <string name="ok">ok</string>
 </resources>

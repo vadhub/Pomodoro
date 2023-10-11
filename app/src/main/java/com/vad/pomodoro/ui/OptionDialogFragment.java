@@ -59,9 +59,9 @@ public class OptionDialogFragment extends Fragment implements CompoundButton.OnC
         CardView shortBreak = view.findViewById(R.id.shortBreak);
         CardView longBreak = view.findViewById(R.id.longBreak);
 
-        pomodoro.setOnClickListener(v -> openDialog(getResources().getString(R.string.pomodoro)));
-        shortBreak.setOnClickListener(v -> openDialog(getResources().getString(R.string.short_break)));
-        longBreak.setOnClickListener(v -> openDialog(getResources().getString(R.string.long_break)));
+        pomodoro.setOnClickListener(v -> openDialog(getResources().getString(R.string.pomodoro), 25, 60, 0));
+        shortBreak.setOnClickListener(v -> openDialog(getResources().getString(R.string.short_break), 5, 15, 1));
+        longBreak.setOnClickListener(v -> openDialog(getResources().getString(R.string.long_break), 15, 30, 2));
 
         aSwitchService = view.findViewById(R.id.switchService);
         aSwitchScreen = view.findViewById(R.id.switchScreen);
@@ -77,9 +77,12 @@ public class OptionDialogFragment extends Fragment implements CompoundButton.OnC
 
     }
 
-    private void openDialog(String currentSetting) {
+    private void openDialog(String currentSetting, int minValue, int maxValue, int state) {
         Bundle bundle = new Bundle();
         bundle.putString("current_setting", currentSetting);
+        bundle.putInt("min_value", minValue);
+        bundle.putInt("max_value", maxValue);
+        bundle.putInt("state", state);
 
         PomodoroSettingsDialog dialogFragment = new PomodoroSettingsDialog();
         dialogFragment.setArguments(bundle);

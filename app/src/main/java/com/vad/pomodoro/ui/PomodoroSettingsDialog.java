@@ -1,5 +1,7 @@
 package com.vad.pomodoro.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,11 +21,10 @@ import com.vad.pomodoro.PomodoroUpdate;
 import com.vad.pomodoro.R;
 import com.vad.pomodoro.model.SaveConfiguration;
 
-public class PomodoroSettingsDialog extends DialogFragment implements NumberPicker.OnValueChangeListener {
+public class PomodoroSettingsDialog extends DialogFragment {
 
     private SaveConfiguration configuration;
     private PomodoroUpdate pomodoroUpdate;
-    private NumberPicker numberPicker;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -32,32 +33,49 @@ public class PomodoroSettingsDialog extends DialogFragment implements NumberPick
         pomodoroUpdate = (MainActivity) context;
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.dialog_pomodoro_settings, container, false);
-    }
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        numberPicker = view.findViewById(R.id.numberPicker);
-        numberPicker.setMinValue(25);
-        numberPicker.setMaxValue(60);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        View view = getLayoutInflater().inflate(R.layout.dialog_pomodoro_settings, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        Bundle args = getArguments();
+
+        String currentSetting = args.getString("current_setting", getContext().getResources().getString(R.string.pomodoro));
+        int minValue = args.getInt("min_value", 25);
+        int maxValue = args.getInt("max_value", 60);
+        int state = args.getInt("state", 0);
+
+        TextView currentSet = view.findViewById(R.id.textState);
+        currentSet.setText(currentSetting);
+
+        NumberPicker numberPicker = view.findViewById(R.id.numberPicker);
+        numberPicker.setMinValue(minValue);
+        numberPicker.setMaxValue(maxValue);
         Log.d("##ok", "onViewCreated: ");
         numberPicker.setValue(configuration.getPomodoro());
-        numberPicker.setOnValueChangedListener(this);
 
-        TextView ok = view.findViewById(R.id.doneSetting);
-        ok.setOnClickListener(v -> {
-            pomodoroUpdate.update();
-            dismiss();
+        numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if (state == 0) {
+                configuration.savePomodoro(newVal);
+            } else if (state == 1) {
+                configuration.saveShort(newVal);
+            } else if (state == 2) {
+                configuration.saveLong(newVal);
+            }
         });
 
-    }
+        builder.setView(view)
+                .setPositiveButton(view.getContext().getResources().getString(R.string.ok), (dialog, which) -> {
+                    pomodoroUpdate.update();
+                    dismiss();
+                }).setNegativeButton(view.getContext().getResources().getString(R.string.cancel), ((dialog, which) -> {
+                    dismiss();
+                }));
 
-    @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
+        return builder.create();
     }
 }
