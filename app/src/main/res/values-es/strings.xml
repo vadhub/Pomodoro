@@ -14,4 +14,8 @@
     <string name="set_pomodoro">pomodoro</string>
     <string name="back_press">Presiona atrás nuevamente para salir de la aplicación</string>
     <string name="ok">ok</string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="short_break">Breve descanso</string>
+    <string name="long_break">Largo descanso</string>
+    <string name="cancel">Cancelar</string>
 </resources>

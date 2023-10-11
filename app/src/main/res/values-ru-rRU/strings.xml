@@ -14,4 +14,8 @@
     <string name="set_pomodoro">помодоро</string>
     <string name="back_press">Нажмите еще раз, чтобы выйти из приложения</string>
     <string name="ok">ok</string>
+    <string name="pomodoro">Помодоро</string>
+    <string name="short_break">Короткий перерыв</string>
+    <string name="long_break">Длинный перерыв</string>
+    <string name="cancel">отмена</string>
 </resources>
