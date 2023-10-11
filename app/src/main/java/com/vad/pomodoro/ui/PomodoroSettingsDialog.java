@@ -23,9 +23,7 @@ public class PomodoroSettingsDialog extends DialogFragment implements NumberPick
 
     private SaveConfiguration configuration;
     private PomodoroUpdate pomodoroUpdate;
-    private NumberPicker numberPickerPomodoro;
-    private NumberPicker numberPickerShort;
-    private NumberPicker numberPickerLong;
+    private NumberPicker numberPicker;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,24 +41,12 @@ public class PomodoroSettingsDialog extends DialogFragment implements NumberPick
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        numberPickerPomodoro = view.findViewById(R.id.numberPickerPomodoro);
-        numberPickerPomodoro.setMinValue(25);
-        numberPickerPomodoro.setMaxValue(60);
+        numberPicker = view.findViewById(R.id.numberPicker);
+        numberPicker.setMinValue(25);
+        numberPicker.setMaxValue(60);
         Log.d("##ok", "onViewCreated: ");
-        numberPickerPomodoro.setValue(configuration.getPomodoro());
-        numberPickerPomodoro.setOnValueChangedListener(this);
-
-        numberPickerShort = view.findViewById(R.id.numberPickerShort);
-        numberPickerShort.setMinValue(5);
-        numberPickerShort.setMaxValue(15);
-        numberPickerShort.setValue(configuration.getShort());
-        numberPickerShort.setOnValueChangedListener(this);
-
-        numberPickerLong = view.findViewById(R.id.numberPickerLong);
-        numberPickerLong.setMinValue(15);
-        numberPickerLong.setMaxValue(30);
-        numberPickerLong.setValue(configuration.getLong());
-        numberPickerLong.setOnValueChangedListener(this);
+        numberPicker.setValue(configuration.getPomodoro());
+        numberPicker.setOnValueChangedListener(this);
 
         TextView ok = view.findViewById(R.id.doneSetting);
         ok.setOnClickListener(v -> {
@@ -72,12 +58,6 @@ public class PomodoroSettingsDialog extends DialogFragment implements NumberPick
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        if (picker.equals(numberPickerPomodoro)) {
-            configuration.savePomodoro(newVal);
-        } else if (picker.equals(numberPickerShort)) {
-            configuration.saveShort(newVal);
-        } else if (picker.equals(numberPickerLong)) {
-            configuration.saveLong(newVal);
-        }
+
     }
 }
