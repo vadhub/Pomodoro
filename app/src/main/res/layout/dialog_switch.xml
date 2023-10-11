@@ -10,6 +10,7 @@
         android:id="@+id/pomodoroCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:elevation="8dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toStartOf="@id/shortBreak"
@@ -40,6 +41,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/shortBreak"
+        android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
@@ -72,6 +74,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/longBreak"
+        android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
