@@ -2,20 +2,17 @@ package com.vad.pomodoro.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.vad.pomodoro.CheckOnService;
 import com.vad.pomodoro.KeepScreen;
@@ -23,7 +20,7 @@ import com.vad.pomodoro.R;
 import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.model.SaveConfiguration;
 
-public class OptionDialogFragment extends DialogFragment implements CompoundButton.OnCheckedChangeListener {
+public class OptionDialogFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
     private CheckOnService consumer;
     private KeepScreen keepScreen;
@@ -52,16 +49,23 @@ public class OptionDialogFragment extends DialogFragment implements CompoundButt
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return inflater.inflate(R.layout.dialog_switch, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        aSwitchService = (Switch) view.findViewById(R.id.switchService);
-        aSwitchScreen = (Switch) view.findViewById(R.id.switchScreen);
-        aSwitchTik = (Switch) view.findViewById(R.id.switchTikTak);
+        CardView pomodoro = view.findViewById(R.id.pomodoroCard);
+        CardView shortBreak = view.findViewById(R.id.shortBreak);
+        CardView longBreak = view.findViewById(R.id.longBreak);
+
+        pomodoro.setOnClickListener(v -> openDialog(getResources().getString(R.string.pomodoro)));
+        shortBreak.setOnClickListener(v -> openDialog(getResources().getString(R.string.short_break)));
+        longBreak.setOnClickListener(v -> openDialog(getResources().getString(R.string.long_break)));
+
+        aSwitchService = view.findViewById(R.id.switchService);
+        aSwitchScreen = view.findViewById(R.id.switchScreen);
+        aSwitchTik = view.findViewById(R.id.switchTikTak);
 
         aSwitchScreen.setChecked(configuration.getKeepScreen());
         aSwitchService.setChecked(configuration.getShowNotification());
@@ -71,14 +75,15 @@ public class OptionDialogFragment extends DialogFragment implements CompoundButt
         aSwitchScreen.setOnCheckedChangeListener(this);
         aSwitchTik.setOnCheckedChangeListener(this);
 
-        TextView textView = (TextView) view.findViewById(R.id.ok);
-        textView.setOnClickListener(v -> dismiss());
+    }
 
-        Button openSettings = view.findViewById(R.id.openSetPomodoro);
-        openSettings.setOnClickListener(v -> {
-            PomodoroSettingsDialog dialogFragment = new PomodoroSettingsDialog();
-            dialogFragment.show(getActivity().getSupportFragmentManager(), "settings_pomodoro_fragment");
-        });
+    private void openDialog(String currentSetting) {
+        Bundle bundle = new Bundle();
+        bundle.putString("current_setting", currentSetting);
+
+        PomodoroSettingsDialog dialogFragment = new PomodoroSettingsDialog();
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getActivity().getSupportFragmentManager(), "settings_pomodoro_fragment");
     }
 
     @Override
