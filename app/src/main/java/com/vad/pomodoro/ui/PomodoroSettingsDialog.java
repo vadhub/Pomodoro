@@ -30,7 +30,7 @@ public class PomodoroSettingsDialog extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         configuration = new SaveConfiguration(context);
-        pomodoroUpdate = (MainActivity) context;
+        pomodoroUpdate = (TimerFragment) context;
     }
 
     @NonNull

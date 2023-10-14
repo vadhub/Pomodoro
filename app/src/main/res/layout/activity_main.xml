@@ -8,104 +8,10 @@
     android:background="?attr/colorOnPrimary"
     tools:context=".ui.MainActivity">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressBar2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateOnly="false"
-        android:max="100"
-        android:progress="100"
-        app:indicatorSize="300dp"
-        app:layout_constraintVertical_bias="0.3"
-        app:indicatorColor="@color/tomato"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:trackColor="@color/tomato_pale"
-        app:trackCornerRadius="8dp" />
-
-    <TextView
-        android:id="@+id/textTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/_00_00"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar2"
-        app:layout_constraintEnd_toEndOf="@+id/progressBar2"
-        app:layout_constraintStart_toStartOf="@+id/progressBar2"
-        app:layout_constraintTop_toTopOf="@+id/progressBar2" />
-
-    <Button
-        android:id="@+id/buttonStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:drawableLeft="@drawable/ic_baseline_play_arrow_24"
-        android:onClick="onStartTimer"
-        android:text="@string/start_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
-
-    <Button
-        android:id="@+id/buttonReset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:drawableLeft="@drawable/ic_baseline_restart_alt_24"
-        android:text="@string/reset"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
-
-
-    <TextView
-        android:id="@+id/numRoundTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/round1"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/textTimer"
-        app:layout_constraintStart_toStartOf="@+id/textTimer"
-        app:layout_constraintTop_toBottomOf="@+id/textTimer">
-
-        <ImageView
-            android:id="@+id/oneRound"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_marginHorizontal="4dp"
-            android:src="@drawable/indicator_current" />
-
-        <ImageView
-            android:id="@+id/twoRound"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_marginHorizontal="4dp"
-            android:src="@drawable/indicator_empty" />
-
-        <ImageView
-            android:id="@+id/threeRound"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_marginHorizontal="4dp"
-            android:src="@drawable/indicator_empty" />
-
-        <ImageView
-            android:id="@+id/fourRound"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_marginHorizontal="4dp"
-            android:src="@drawable/indicator_empty" />
-
-    </LinearLayout>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <com.yandex.mobile.ads.banner.BannerAdView
         android:id="@+id/adView"
