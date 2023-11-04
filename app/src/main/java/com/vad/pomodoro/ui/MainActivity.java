@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,12 +46,11 @@ import com.vad.pomodoro.TikTakHandler;
 import com.vad.pomodoro.TimerHandle;
 import com.vad.pomodoro.domain.MyService;
 import com.vad.pomodoro.model.SaveConfiguration;
-import com.yandex.mobile.ads.banner.AdSize;
+import com.yandex.mobile.ads.banner.BannerAdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
 import com.yandex.mobile.ads.common.AdRequest;
 
 import java.util.concurrent.TimeUnit;
-
 
 public class MainActivity extends AppCompatActivity implements TimerHandle, CheckOnService, KeepScreen, TikTakHandler, PomodoroUpdate {
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
         BannerAdView mBanner = (BannerAdView) findViewById(R.id.adView);
         mBanner.setAdUnitId("R-M-2304842-1");
-        mBanner.setAdSize(AdSize.stickySize(AdSize.FULL_SCREEN.getWidth()));
+        mBanner.setAdSize(getAdSize(mBanner));
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
 
@@ -139,6 +139,19 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             int flags = WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
             getWindow().addFlags(flags);
         }
+    }
+
+    private BannerAdSize getAdSize(BannerAdView mBanner ) {
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        // Calculate the width of the ad, taking into account the padding in the ad container.
+        int adWidthPixels = mBanner.getWidth();
+        if (adWidthPixels == 0) {
+            // If the ad hasn't been laid out, default to the full screen width
+            adWidthPixels = displayMetrics.widthPixels;
+        }
+        final int adWidth = Math.round(adWidthPixels / displayMetrics.density);
+
+        return BannerAdSize.stickySize(this, adWidth);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
