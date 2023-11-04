@@ -189,6 +189,9 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
             OptionDialogFragment dialogFragment = new OptionDialogFragment();
             dialogFragment.show(getSupportFragmentManager(), "settings_fragment");
             return true;
+        } else if (item.getItemId() == R.id.timer) {
+            PomodoroSettingsDialog dialogFragment = new PomodoroSettingsDialog();
+            dialogFragment.show(getSupportFragmentManager(), "settings_pomodoro_fragment");
         }
         return super.onOptionsItemSelected(item);
     }

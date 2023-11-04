@@ -44,7 +44,7 @@ public class SaveConfiguration {
 
     public boolean geSoundTikTak() {
         prefer = context.getSharedPreferences("pomodoro_save_tiktak", Context.MODE_PRIVATE);
-        return prefer.getBoolean("is_on", true);
+        return prefer.getBoolean("is_on", false);
     }
 
     public void savePomodoro(int pomodoro) {
