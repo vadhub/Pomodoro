@@ -10,8 +10,8 @@ android {
         applicationId "com.vad.pomodoro"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 17
-        versionName "1.2.0"
+        versionCode 18
+        versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,7 +40,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.0'
     //noinspection MobileAdsSdkOutdatedVersion
-    implementation 'com.yandex.android:mobileads:5.9.0'
+    implementation 'com.yandex.android:mobileads:6.1.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
