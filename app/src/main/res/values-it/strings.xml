@@ -3,7 +3,7 @@
     <string name="volume_audion">Aumenta il volume dell\'audio</string>
     <string name="pause_text">Pausa</string>
     <string name="start_text">Inizio</string>
-    <string name="app_name">Pomodoro Timer</string>
+    <string name="app_name">Temporizzatore del pomodoroTimer</string>
     <string name="time">Tempo</string>
     <string name="notification_channel">Utilizzato per mostrare il tempo fino al termine del timer del pomodoro</string>
     <string name="relax">Riposo</string>

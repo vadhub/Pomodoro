@@ -3,7 +3,7 @@
     <string name="volume_audion">Augmenter le volume audio</string>
     <string name="pause_text">Pause</string>
     <string name="start_text">Commencer</string>
-    <string name="app_name">Pomodoro Timer</string>
+    <string name="app_name">Minuterie Pomodoro</string>
     <string name="time">Temps</string>
     <string name="notification_channel">Utilisé pour afficher le temps jusqu\'à la fin du minuteur de tomates</string>
     <string name="relax">Repos</string>
