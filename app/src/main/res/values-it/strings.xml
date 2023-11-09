@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="volume_audion">Aumenta il volume dell\'audio</string>
+    <string name="pause_text">Pausa</string>
+    <string name="start_text">Inizio</string>
+    <string name="app_name">Pomodoro Timer</string>
+    <string name="time">Tempo</string>
+    <string name="notification_channel">Utilizzato per mostrare il tempo fino al termine del timer del pomodoro</string>
+    <string name="relax">Riposo</string>
+    <string name="show_notification">Mostra notifica</string>
+    <string name="screen_on">Schermo acceso</string>
+    <string name="ticking">Ticchettio</string>
+    <string name="reset">Ripristina</string>
+    <string name="set_pomodoro">impostare il pomodoro</string>
+    <string name="back_press">Premi nuovamente Indietro per uscire dall\'app</string>
+</resources>

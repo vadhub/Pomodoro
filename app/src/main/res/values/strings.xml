@@ -1,6 +1,6 @@
 <resources>
     <string name="_00_00" translatable="false">00:00</string>
-    <string name="volume_audion">Increase volume audio</string>
+    <string name="volume_audion">Increase audio volume</string>
     <string name="pause_text">Pause</string>
     <string name="start_text">Start</string>
     <string name="app_name">Pomodoro Timer</string>
