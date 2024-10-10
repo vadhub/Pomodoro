@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
         }
     }
 
-    private BannerAdSize getAdSize(BannerAdView mBanner ) {
+    private BannerAdSize getAdSize(BannerAdView mBanner) {
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         // Calculate the width of the ad, taking into account the padding in the ad container.
         int adWidthPixels = mBanner.getWidth();
@@ -213,14 +213,14 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         float width = buttonStart.getMeasuredWidth() / 2f;
-        float f = getResources().getDisplayMetrics().widthPixels/2f;
+        float f = getResources().getDisplayMetrics().widthPixels / 2f;
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width+10);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(buttonStart, "translationX", f + width + 10);
         objectAnimator.setDuration(200);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.start();
 
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(buttonReset, "translationX", f + width+10);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(buttonReset, "translationX", f + width + 10);
         objectAnimator1.setDuration(300);
         objectAnimator1.setInterpolator(new DecelerateInterpolator());
         objectAnimator1.start();
@@ -258,10 +258,10 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
     public void stopTimer() {
         Log.d("##main", "stopTimer: ok");
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        PowerManager.WakeLock  wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |
                 PowerManager.ACQUIRE_CAUSES_WAKEUP |
                 PowerManager.ON_AFTER_RELEASE, "appname::WakeLock");
-        wakeLock.acquire(10*60*1000L /*10 minutes*/);
+        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
 
         setTimer();
         buttonStart.setText(getResources().getString(R.string.start_text));
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements TimerHandle, Chec
 
     @Override
     public void update() {
-        if(mService != null) {
+        if (mService != null) {
             mService.pomodoroUpdate();
             setTimer();
         }
