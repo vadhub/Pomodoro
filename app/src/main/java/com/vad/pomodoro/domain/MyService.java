@@ -185,13 +185,14 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
         stopSelf();
     }
 
-    @SuppressLint("NotificationId0")
+    @SuppressLint({"NotificationId0", "ForegroundServiceType"})
     public void clearNotification() {
         isShowNotification = false;
         startForeground(0, null);
         notificationService.notificationClear(idNotification);
     }
 
+    @SuppressLint("ForegroundServiceType")
     public void showNotification() {
         isShowNotification = true;
         startForeground(idNotification, nb.build());
