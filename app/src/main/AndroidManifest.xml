@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"
+        android:minSdkVersion="34"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
@@ -16,7 +18,8 @@
         android:theme="@style/Theme.Pomodoro">
 
         <service
-            android:name=".domain.MyService" />
+            android:name=".domain.MyService"
+            android:foregroundServiceType="specialUse" />
 
         <activity android:name=".ui.MainActivity"
             android:launchMode="singleTop"

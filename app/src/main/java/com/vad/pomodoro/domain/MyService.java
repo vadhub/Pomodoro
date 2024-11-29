@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.media.AudioManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.vad.pomodoro.R;
@@ -188,14 +191,24 @@ public class MyService extends Service implements TimerHandle, RoundListener, Ti
     @SuppressLint({"NotificationId0", "ForegroundServiceType"})
     public void clearNotification() {
         isShowNotification = false;
-        startForeground(0, null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startForeground(idNotification, null);
+        } else {
+            startForeground(idNotification, null,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+        }
         notificationService.notificationClear(idNotification);
     }
 
     @SuppressLint("ForegroundServiceType")
     public void showNotification() {
         isShowNotification = true;
-        startForeground(idNotification, nb.build());
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startForeground(idNotification, nb.build());
+        } else {
+            startForeground(idNotification, nb.build(),
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+        }
     }
 
     @Override
